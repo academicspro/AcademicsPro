@@ -95,6 +95,7 @@
     "@types/node": "^20",
     "@types/nodemailer": "^6.4.17",
     "@types/react": "^19",
+    "@types/react-big-calendar": "^1.16.1",
     "@types/react-dom": "^19",
     "@types/stripe": "^8.0.417",
     "eslint": "^9",
