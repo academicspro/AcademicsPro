@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/db';
 
-export async function GET(req: NextRequest, context: { params: { id: string } }) {
-  const { id } = context.params;
+export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+  const { id } = params;
 
   try {
     const user = await prisma.user.findUnique({
@@ -14,8 +14,7 @@ export async function GET(req: NextRequest, context: { params: { id: string } })
     }
 
     // Exclude the password field
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password, ...sanitizedUser } = user;
+    const { password, ...sanitizedUser } = user; // eslint-disable-line @typescript-eslint/no-unused-vars
 
     return NextResponse.json(sanitizedUser, { status: 200 });
   } catch (error) {
@@ -27,4 +26,3 @@ export async function GET(req: NextRequest, context: { params: { id: string } })
     );
   }
 }
-
