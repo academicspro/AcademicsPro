@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useFetch } from '@/hooks/useFetch';
+import Image from 'next/image';
 
 type User = {
   id: number;
@@ -60,7 +61,7 @@ const UserList = () => {
             className="p-4 border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer"
           >
             <div className="text-center">
-              <img
+              <Image
                 src={user.profilePic}
                 alt={user.name}
                 className="w-24 h-24 object-cover rounded-full mx-auto mb-4"
@@ -76,7 +77,7 @@ const UserList = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-8 rounded-lg w-3/4 sm:w-1/2">
             <div className="flex items-center mb-6">
-              <img
+              <Image
                 src={selectedUser.profilePic}
                 alt={selectedUser.name}
                 className="w-32 h-32 object-cover rounded-full mr-6"
