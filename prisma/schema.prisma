@@ -92,7 +92,7 @@ model PasswordResetToken {
 model Student {
   id        String @id @default(cuid())
   bloodType String
-
+  sex                UserSex       @default(MALE )
   schoolId    String
   userId      String?
   parentId    String
@@ -112,7 +112,7 @@ model Student {
 
 model Teacher {
   id String @id @default(cuid())
-
+  sex                UserSex       @default(MALE )
   schoolId  String
   userId    String?
   user      User?    @relation(fields: [userId], references: [id])

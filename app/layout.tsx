@@ -22,6 +22,7 @@ export default function RootLayout({
       <body
         className={`bg-background text-foreground antialiased`}
       >
+        
         {children}
       </body>
     </html>
