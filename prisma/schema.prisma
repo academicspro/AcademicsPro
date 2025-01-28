@@ -41,7 +41,7 @@ model User {
   state              String?
   country            String?
   pincode            String?
-  bloodType          String
+  bloodType          String?
   sex                UserSex
   role               Role                 @default(superadmin)
   schoolId           String?
@@ -87,7 +87,7 @@ model PasswordResetToken {
 
 model Student {
   id        String @id @default(cuid())
-  bloodType String
+
 
   schoolId    String
   userId      String?
