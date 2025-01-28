@@ -12,6 +12,7 @@
     "prisma:generate": "prisma generate"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.10.0",
     "@prisma/client": "^6.2.1",
     "@radix-ui/react-accordion": "^1.2.0",
     "@radix-ui/react-alert-dialog": "^1.1.1",
@@ -106,6 +107,8 @@
     "ts-node": "^10.9.2",
     "typescript": "^5"
   },
-
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+  },
   "type": "module"
 }
