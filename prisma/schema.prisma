@@ -8,29 +8,24 @@ datasource db {
 }
 
 model School {
-  id        String    @id @default(cuid())
-  name      String
-  phone     String    @unique
-  address   String
-  city      String
-  state     String
-  country   String
-  pincode   String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @default(now()) @updatedAt
-  users     User[]    @relation()
-  students  Student[]
-  teachers  Teacher[]
-  parents   Parent[]
-  libraries Library[]
-  hostels   Hostel[]
+  id         String      @id @default(cuid())
+  name       String
+  phone      String      @unique
+  address    String
+  city       String
+  state      String
+  country    String
+  pincode    String
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @default(now()) @updatedAt
+  users      User[]      @relation()
+  students   Student[]
+  teachers   Teacher[]
+  parents    Parent[]
+  libraries  Library[]
+  hostels    Hostel[]
   transports Transport[]
-  accounts  Account[]
-
-
-  SchoolPaymentGateway SchoolPaymentGateway[]
-
-  // Class Class[]
+  accounts   Account[]
 }
 
 // User Models are defined here
@@ -46,6 +41,7 @@ model User {
   state              String?
   country            String?
   pincode            String?
+  sex                UserSex       @default(MALE )
   role               Role                 @default(superadmin)
   schoolId           String?
   school             School?              @relation(fields: [schoolId], references: [id])
@@ -59,8 +55,6 @@ model User {
   hostels            Hostel[]
   transports         Transport[]
   accounts           Account[]
-
- 
 }
 
 enum Role {
@@ -75,8 +69,10 @@ enum Role {
   account
 }
 
-
-
+enum UserSex {
+  MALE
+  FEMALE
+}
 
 model PasswordResetToken {
   id        Int       @id @default(autoincrement())
@@ -94,25 +90,28 @@ model PasswordResetToken {
 // School Addmin user models
 
 model Student {
-  id        String   @id @default(cuid())
+  id        String @id @default(cuid())
+  bloodType String
 
- 
-  schoolId  String
-  userId    String?
-  user      User?    @relation(fields: [userId], references: [id])
-  school    School   @relation(fields: [schoolId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
-
-  // Fee Fee[]
-
-  // Result Result[]
-
-  // Attendance Attendance[]
+  schoolId    String
+  userId      String?
+  parentId    String
+  parent      Parent       @relation(fields: [parentId], references: [id])
+  user        User?        @relation(fields: [userId], references: [id])
+  classId     Int
+  class       Class        @relation(fields: [classId], references: [id])
+  gradeId     Int
+  grade       Grade        @relation(fields: [gradeId], references: [id])
+  attendances Attendance[]
+  results     Result[]
+  birthday    DateTime     @default("2000-01-01T00:00:00.000Z")
+  school      School       @relation(fields: [schoolId], references: [id])
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @default(now()) @updatedAt
 }
 
 model Teacher {
-  id        String   @id @default(cuid())
+  id String @id @default(cuid())
 
   schoolId  String
   userId    String?
@@ -121,27 +120,27 @@ model Teacher {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
-  // Class Class[]
-
-  // Subject Subject[]
-
-  // Lesson Lesson[]
+  subjects Subject[]
+  lessons  Lesson[]
+  classes  Class[]
+  birthday DateTime  @default("2000-01-01T00:00:00.000Z")
 }
 
 model Parent {
-  id        String   @id @default(cuid())
-  
+  id String @id @default(cuid())
+
   schoolId  String
   userId    String?
-  user      User?    @relation(fields: [userId], references: [id])
-  school    School   @relation(fields: [schoolId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
+  user      User?     @relation(fields: [userId], references: [id])
+  school    School    @relation(fields: [schoolId], references: [id])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now()) @updatedAt
+  students  Student[]
 }
 
 model Library {
-  id        String   @id @default(cuid())
- 
+  id String @id @default(cuid())
+
   schoolId  String
   userId    String?
   user      User?    @relation(fields: [userId], references: [id])
@@ -151,8 +150,8 @@ model Library {
 }
 
 model Hostel {
-  id        String   @id @default(cuid())
- 
+  id String @id @default(cuid())
+
   schoolId  String
   userId    String?
   user      User?    @relation(fields: [userId], references: [id])
@@ -162,8 +161,8 @@ model Hostel {
 }
 
 model Transport {
-  id        String   @id @default(cuid())
- 
+  id String @id @default(cuid())
+
   schoolId  String
   userId    String?
   user      User?    @relation(fields: [userId], references: [id])
@@ -173,8 +172,8 @@ model Transport {
 }
 
 model Account {
-  id        String   @id @default(cuid())
- 
+  id String @id @default(cuid())
+
   schoolId  String
   userId    String?
   user      User?    @relation(fields: [userId], references: [id])
@@ -183,493 +182,124 @@ model Account {
   updatedAt DateTime @default(now()) @updatedAt
 }
 
+model Grade {
+  id    Int @id @default(autoincrement())
+  level Int @unique
 
+  students Student[]
+  classess Class[]
+}
+
+model Class {
+  id       Int    @id @default(autoincrement())
+  name     String @unique
+  capacity Int
+
+  supervisorId  String?
+  supervisor    Teacher?       @relation(fields: [supervisorId], references: [id])
+  lessons       Lesson[]
+  students      Student[]
+  gradeId       Int
+  grade         Grade          @relation(fields: [gradeId], references: [id])
+  events        Event[]
+  announcements Announcement[]
+}
+
+model Subject {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  teachers Teacher[]
+  lessons  Lesson[]
+}
+
+model Lesson {
+  id        Int      @id @default(autoincrement())
+  name      String
+  day       Day
+  startTime DateTime
+  endTime   DateTime
+
+  subjectId   Int
+  subject     Subject      @relation(fields: [subjectId], references: [id])
+  classId     Int
+  class       Class        @relation(fields: [classId], references: [id])
+  teacherId   String
+  teacher     Teacher      @relation(fields: [teacherId], references: [id])
+  exams       Exam[]
+  assignments Assignment[]
+  attendances Attendance[]
+}
+
+model Exam {
+  id        Int      @id @default(autoincrement())
+  title     String
+  startTime DateTime
+  endTime   DateTime
+
+  lessonId Int
+  lesson   Lesson   @relation(fields: [lessonId], references: [id])
+  results  Result[]
+}
+
+model Assignment {
+  id        Int      @id @default(autoincrement())
+  title     String
+  startDate DateTime
+  dueDate   DateTime
+
+  lessonId Int
+  lesson   Lesson   @relation(fields: [lessonId], references: [id])
+  results  Result[]
+}
+
+model Result {
+  id    Int @id @default(autoincrement())
+  score Int
+
+  examId       Int?
+  exam         Exam?       @relation(fields: [examId], references: [id])
+  assignmentId Int?
+  assignment   Assignment? @relation(fields: [assignmentId], references: [id])
+  studentId    String
+  student      Student     @relation(fields: [studentId], references: [id])
+}
+
+model Attendance {
+  id      Int      @id @default(autoincrement())
+  date    DateTime
+  present Boolean
+
+  studentId String
+  student   Student @relation(fields: [studentId], references: [id])
+  lessonId  Int
+  lesson    Lesson  @relation(fields: [lessonId], references: [id])
+}
 
 model Event {
-  id          String   @id @default(cuid())
+  id          Int      @id @default(autoincrement())
   title       String
-  description String?
-  startDate   DateTime
-  endDate     DateTime
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  description String
+  startTime   DateTime @default(now())
+  endTime     DateTime @default(now())
+
+  classId Int?
+  class   Class? @relation(fields: [classId], references: [id])
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-model SchoolPaymentGateway {
-  id           String   @id @default(cuid())
-  schoolId     String   @unique
-  stripeApiKey String?
-  razorpayKey  String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @default(now()) @updatedAt
-
-  school       School   @relation(fields: [schoolId], references: [id])
+model Announcement {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  date        DateTime
+
+  classId Int?
+  class   Class? @relation(fields: [classId], references: [id])
 }
 
-
-
-model Fee {
-  id        String   @id @default(cuid())
-  studentId String
-  amount    Float
-  status    String   @default("pending") // "paid", "partial", or "pending"
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
-
-  // student   Student  @relation(fields: [studentId], references: [id])
+enum Day {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Teacher Routes here manage class, attendence, assignment, exam, grade, leaderboard
-
-// model Class {
-
-//   id          String    @id @default(cuid())
-//   name        String
-//   description String?
-//   schoolId    String
-//   capacity    String
-//   createdAt   DateTime  @default(now())
-//   updatedAt   DateTime  @default(now()) @updatedAt
-
-//   school      School    @relation(fields: [schoolId], references: [id])
-//   teachers    Teacher[]
-//   subjects    Subject[]
-  
-
-//   Lesson Lesson[]
-// }
-
-// model Subject {
-//   id       String    @id @default(cuid())
-//   name     String
-//   classId  String
-//   createdAt DateTime  @default(now())
-//   updatedAt DateTime  @default(now()) @updatedAt
-
-//   class    Class     @relation(fields: [classId], references: [id])
-//   teachers Teacher[]
-//   lessons  Lesson[]
-// }
-
-// model Lesson {
-//   id        String   @id @default(cuid())
-//   name      String
-//   day       String
-//   startTime DateTime
-//   endTime   DateTime
-//   subjectId String
-//   classId   String
-//   teacherId String
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @default(now()) @updatedAt
-
-//   subject     Subject      @relation(fields: [subjectId], references: [id])
-//   class       Class        @relation(fields: [classId], references: [id])
-//   teacher     Teacher      @relation(fields: [teacherId], references: [id])
-//   exams       Exam[]
-//   assignments Assignment[]
-//   attendances Attendance[]
-// }
-
-// model Assignment {
-//   id        String   @id @default(cuid())
-//   title     String
-//   startDate DateTime
-//   dueDate   DateTime
-//   lessonId  String
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @default(now()) @updatedAt
-
-//   lesson     Lesson   @relation(fields: [lessonId], references: [id])
-//   results    Result[]
-// }
-
-// model Attendance {
-//   id        String   @id @default(cuid())
-//   lessonId  String
-//   studentId String
-//   status    String   @default("absent") // "present", "absent", "late"
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @default(now()) @updatedAt
-
-//   lesson     Lesson   @relation(fields: [lessonId], references: [id])
-//   student    Student  @relation(fields: [studentId], references: [id])
-// }
-
-
-
-// model Exam {
-//   id        String   @id @default(cuid())
-//   title     String
-//   startTime DateTime
-//   endTime   DateTime
-//   lessonId  String
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @default(now()) @updatedAt
-
-//   lesson     Lesson   @relation(fields: [lessonId], references: [id])
-//   results    Result[]
-// }
-
-// model Result {
-//   id           String   @id @default(cuid())
-//   score        Int
-//   examId       String?
-//   assignmentId String?
-//   studentId    String
-//   createdAt    DateTime @default(now())
-//   updatedAt    DateTime @default(now()) @updatedAt
-
-//   exam         Exam?       @relation(fields: [examId], references: [id])
-//   assignment   Assignment? @relation(fields: [assignmentId], references: [id])
-//   student      Student     @relation(fields: [studentId], references: [id])
-// }
-// enum AttendanceStatus {
-//   PRESENT
-//   ABSENT
-//   LATE
-// }
-
-// enum Weekday {
-//   MONDAY
-//   TUESDAY
-//   WEDNESDAY
-//   THURSDAY
-//   FRIDAY
-//   SATURDAY
-//   SUNDAY
-// }
