@@ -50,6 +50,12 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://academics-pro.com"),
 };
 
+declare global {
+  interface Window {
+    dataLayer: unknown[];
+  }
+}
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
@@ -98,16 +104,17 @@ export default function RootLayout({
 
         {/* Google Analytics (GA4) */}
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-F4VLMJZ4B5"></script>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-F4VLMJZ4B5', { page_path: window.location.pathname });
-            `,
-          }}
-        />
+<script
+  dangerouslySetInnerHTML={{
+    __html: `
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { window.dataLayer.push(arguments); }
+      gtag('js', new Date());
+
+      gtag('config', 'G-F4VLMJZ4B5');
+    `,
+  }}
+/>
 
         {/* Facebook Pixel */}
         <script
