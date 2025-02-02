@@ -115,7 +115,7 @@ export const MobileSidebar = ({
     <>
       <div
         className={cn(
-          "h-10 px-4 py-4 flex flex-row md:hidden  items-center justify-between bg-background text-background w-full"
+          "h-10 px-4 py-4 flex flex-row md:hidden  items-center justify-between bg-gray-100 text-background w-full"
         )}
         {...props}
       >
@@ -136,12 +136,12 @@ export const MobileSidebar = ({
                 ease: "easeInOut",
               }}
               className={cn(
-                "fixed h-full w-full inset-0 bg-background text-foreground p-10 z-[100] flex flex-col justify-between",
+                "fixed h-full w-full inset-0 bg-gray-100 text-foreground p-10 z-[100] flex flex-col justify-between",
                 className
               )}
             >
               <div
-                className="absolute right-10 top-10 z-50 text-foreground bg-background"
+                className="absolute right-10 top-10 z-50 text-foreground bg-gray-100"
                 onClick={() => setOpen(!open)}
               >
                 <IconX />

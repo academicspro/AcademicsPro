@@ -5,7 +5,7 @@ import { Button } from '../../ui/button'
 import { useState } from 'react';
 import Image from 'next/image';
 import Logo from '@/./public/logo.png';
-import  Link  from 'next/link';
+import Link from 'next/link';
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -19,7 +19,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
     { label: 'About', href: '#about' },
     { label: 'Modules', href: '#modules' },
     { label: 'Pricing', href: '#pricing' },
-  //   { label: 'Contact', href: '#contact' },
+    //   { label: 'Contact', href: '#contact' },
   ];
 
   const menuVariants = {
@@ -76,17 +76,17 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
             animate="open"
             exit="closed"
             variants={menuVariants}
-            className="fixed right-0 top-0 bottom-0 w-full sm:w-80 bg-background/95 backdrop-blur-xl border-l border-primary/20 shadow-2xl z-50"
+            className="fixed right-0 top-0 bottom-0 w-full sm:w-80 bg-gray-100/95 backdrop-blur-xl border-l border-primary/20 shadow-2xl z-50"
           >
             <div className="p-6">
               {/* Header with close button */}
               <div className="flex justify-between items-center mb-8">
-                <Image 
-                  src={Logo} 
-                  alt="Logo" 
+                <Image
+                  src={Logo}
+                  alt="Logo"
                   className='w-60'
                 />
-                
+
                 <motion.span
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -124,12 +124,12 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                   custom={menuItems.length + 1}
                   variants={itemVariants}
                   className="pt-4"
-                > 
-                <Link href="/login">
-                  <Button variant="glow" className="w-full group">
-                    <span>Get Started</span>
-                    <Sparkles className="w-4 h-4 ml-2 group-hover:animate-pulse" />
-                  </Button>
+                >
+                  <Link href="/login">
+                    <Button variant="glow" className="w-full group">
+                      <span>Get Started</span>
+                      <Sparkles className="w-4 h-4 ml-2 group-hover:animate-pulse" />
+                    </Button>
                   </Link>
                 </motion.div>
               </nav>

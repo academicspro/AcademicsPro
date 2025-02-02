@@ -25,28 +25,55 @@ return NextResponse.json({ message: "School registered successfully" }, { status
 
 export async function GET( ) {
   const schools = await prisma.school.findMany();
-  return NextResponse.json(schools, { status: 200 });
+  return NextResponse.json(schools, { status: 200, statusText: "Schools fetched successfully" });
 }
 
+// update school by ID (PUT route with schoolId)
 
-// Get school by ID (GET route with schoolId)
-// export async function GET_BY_ID(req: NextRequest) {
-//   const { searchParams } = new URL(req.url);
-//   const schoolId = searchParams.get("id");
+export async function PUT(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+  const schoolId = searchParams.get("id");
 
-//   if (!schoolId) {
-//     return NextResponse.json({ message: "School ID is required" }, { status: 400 });
-//   }
+  if (!schoolId) {
+    return NextResponse.json({ message: "School ID is required" }, { status: 400 });
+  }
 
-//   const school = await prisma.school.findUnique({
-//     where: {
-//       id: schoolId,
-//     },
-//   });
+  const { name, phone,address,city,state,country,pincode} = await req.json();
 
-//   if (!school) {
-//     return NextResponse.json({ message: "School not found" }, { status: 404 });
-//   }
+  const school = await prisma.school.update({
+    where: {
+      id: schoolId,
+    },
+    data: {
+      name,
+      phone,
+      address,
+      city,
+      state,
+      country,
+      pincode
+    },
+  });
 
-//   return NextResponse.json(school, { status: 200 });
-// }
+  return NextResponse.json(school, { status: 200, statusText: "School updated successfully" });
+}
+
+// delete school by ID (DELETE route with schoolId)
+
+export async function DELETE(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+  const schoolId = searchParams.get("id");
+
+  if (!schoolId) {
+    return NextResponse.json({ message: "School ID is required" }, { status: 400 });
+  }
+
+  const school = await prisma.school.delete({
+    where: {
+      id: schoolId,
+    },
+  });
+
+  return NextResponse.json(school, { status: 200, statusText: "School deleted successfully" });
+}
+

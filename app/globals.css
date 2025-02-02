@@ -14,86 +14,6 @@ html,
 body {
   height: 100vh;
 }
-@layer base {
-  :root {
-    --background: 224 71% 4%; /* #161a1d */
-    --foreground: 213 31% 91%; /* #e9e7ef */ /* Default text color */
-    --card: 224 71% 4%; /* #161a1d */
-    --card-foreground: 213 31% 91%; /* #e9e7ef */ /* Text color on cards */
-    --popover: 224 71% 4%; /* #161a1d */
-    --popover-foreground: 213 31% 91%; /* #e9e7ef */ /* Text color in popovers */
-    --primary: 263 70% 50%; /* #818cf8 */
-    --primary-foreground: 210 20% 98%; /* #f8fafc */ /* Text color on primary buttons/elements */
-    --secondary: 215 27% 11%; /* #1e293b */
-    --secondary-foreground: 210 20% 98%; /* #f8fafc */ /* Text color on secondary buttons/elements */
-    --muted: 215 27% 11%; /* #1e293b */
-    --muted-foreground: 217.9 10.6% 64.9%; /* #94a3b8 */ /* Text color on muted elements (e.g., disabled buttons) */
-    --accent: 215 27% 11%; /* #1e293b */
-    --accent-foreground: 210 20% 98%; /* #f8fafc */ /* Text color on accent elements */
-    --destructive: 0 62.8% 30.6%; /* #dc2626 */
-    --destructive-foreground: 210 20% 98%; /* #f8fafc */ /* Text color on destructive buttons */
-    --border: 215 27% 11%; /* #1e293b */
-    --input: 215 27% 11%; /* #1e293b */
-    --ring: 263 70% 50%; /* #818cf8 */
-  }
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-    background: radial-gradient(
-        circle at 50% 50%,
-        hsl(var(--primary) / 0.15),
-        transparent 1200px
-      ),
-      radial-gradient(
-        circle at 0% 0%,
-        hsl(var(--primary) / 0.1),
-        transparent 800px
-      );
-  }
-}
-
-/* Animated background grid */
-.bg-grid {
-  background-size: 50px 50px;
-  background-image: linear-gradient(
-      to right,
-      hsl(var(--primary) / 0.1) 1px,
-      transparent 1px
-    ),
-    linear-gradient(to bottom, hsl(var(--primary) / 0.1) 1px, transparent 1px);
-  mask-image: radial-gradient(black, transparent 75%);
-}
-
-/* Glow effects */
-.glow {
-  position: relative;
-}
-
-.glow::before {
-  content: "";
-  position: absolute;
-  inset: -1px;
-  background: linear-gradient(
-    to right,
-    hsl(var(--primary)),
-    hsl(var(--primary) / 0.5)
-  );
-  border-radius: inherit;
-  z-index: -1;
-  filter: blur(8px);
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-
-.glow:hover::before {
-  opacity: 1;
-}
-
 /* Animations */
 @keyframes spin {
   from {
@@ -228,7 +148,7 @@ body {
   background-color: #fdf2fb !important;
 }
 
-.rbc-event-label{
+.rbc-event-label {
   color: gray !important;
   margin-bottom: 5px;
 }

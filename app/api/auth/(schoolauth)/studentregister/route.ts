@@ -56,6 +56,8 @@
 //         state,
 //         country,
 //         pincode,
+//         sex:"FEMALE",
+//         bloodType: "O+",
 //         profilePic: url, 
 //         password: hashedPassword,
 //         role: "student",

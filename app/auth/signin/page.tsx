@@ -69,7 +69,7 @@ export default function SignIn() {
     <>
 
       <Realnavbar />
-      <div className="flex items-center justify-center min-h-screen bg-background text-foreground">
+      <div className="flex items-center justify-center min-h-screen bg-gray-100 text-foreground">
         <form
           onSubmit={handleSubmit}
           className="p-6 bg-backgroung shadow-lg shadow-white rounded-md w-96"

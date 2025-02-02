@@ -1,7 +1,7 @@
 "use client";
-import  {  useState,JSX } from "react";
+import { useState, JSX } from "react";
 import { Sidebar, SidebarBody, SidebarLink } from "./ui/sidebar";
-import { signOut } from "next-auth/react"; 
+import { signOut } from "next-auth/react";
 import { IconArrowLeft, IconBrandTabler, IconSettings, IconUserBolt } from "@tabler/icons-react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
@@ -10,7 +10,7 @@ import Logo from "@/public/logo.png";
 import Dashboard from "./Dashboard";
 
 export function SidebarDemo({ children }: { children: React.ReactNode }) {
-  const { data: session, status } = useSession();  
+  const { data: session, status } = useSession();
   const [open, setOpen] = useState(false);
 
 
@@ -93,7 +93,7 @@ export function SidebarDemo({ children }: { children: React.ReactNode }) {
         href: "/admin/event",
         icon: <IconSettings className="text-primary-foreground h-5 w-5 flex-shrink-0" />
       },
-      
+
 
 
       {
@@ -234,10 +234,10 @@ export function SidebarDemo({ children }: { children: React.ReactNode }) {
   const links = sidebarLinks[userRole as keyof typeof sidebarLinks];
 
   return (
-    <div className={cn("bg-background text-foreground flex flex-col md:flex-row w-screen h-screen max-w-none mx-0 border border-neutral-200 overflow-hidden")}>
+    <div className={cn("bg-gray-100 text-foreground flex flex-col md:flex-row w-screen h-screen max-w-none mx-0 border border-neutral-200 overflow-hidden")}>
       <Sidebar open={open} setOpen={setOpen}>
-        <SidebarBody className="justify-between gap-10 h-full bg-background text-foreground">
-          <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden bg-background text-foreground">
+        <SidebarBody className="justify-between gap-10 h-full bg-gray-100 text-foreground">
+          <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden bg-gray-100 text-foreground">
             {open ? <Logos /> : <Logos />}
             <div className="mt-8 flex flex-col gap-2">
               {links.map((link: { label: string; href: string; icon: JSX.Element }, idx: React.Key | null | undefined) => (

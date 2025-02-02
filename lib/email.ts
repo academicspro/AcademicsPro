@@ -122,7 +122,7 @@ export const sendRegistrationEmail = async (email: string, password: string) => 
 };
 
 
-// Function to send password reset email
+
 export async function sendResetEmail(email: string, resetLink: string) {
   const transporter = nodemailer.createTransport({
     service: "gmail", 

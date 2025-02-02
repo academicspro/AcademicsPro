@@ -29,6 +29,8 @@ async function main() {
       country,
       pincode,
       profilePic,
+      sex:"MALE",
+      bloodType:"A+",
       email,
       password: hashedPassword,
       role: "admin",

@@ -5,11 +5,11 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Academics-Pro | Best School Management System",
   description: "Academics-Pro is the ultimate school management system, offering seamless student, teacher, and administration workflows with cutting-edge technology.",
-  keywords:[
+  keywords: [
     "Academics-Pro",
     "Acedemics-Pro",
     "AcademicsPro",
-    
+
     "school management system",
     "student portal",
     "education software",
@@ -127,7 +127,7 @@ export const metadata: Metadata = {
     "parent student school performance app",
     "real-time school attendance management",
     "academic performance prediction software"
-  ],  
+  ],
   authors: [{ name: "Academics-Pro Team", url: "https://academics-pro.com" }],
   creator: "Academics-Pro & Team",
   applicationName: "Academics-Pro",
@@ -274,7 +274,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="bg-background text-foreground antialiased">
+      <body className="bg-gray-100 text-foreground antialiased">
         {children}
       </body>
     </html>

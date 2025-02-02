@@ -1,22 +1,31 @@
-// /app/layout.tsx
-"use client"
-import React from "react";
-import { SidebarDemo } from "../../components/Side";
-import { SessionProvider } from "next-auth/react";
+import Menu from "@/components/Menu";
+import Navbar from "@/components/Navbar";
+import Image from "next/image";
+import Link from "next/link";
 
-
-const MainLayout = ({ children }: { children: React.ReactNode }) => {
+export default function DashboardLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
-    <SessionProvider>
-      <div className="flex">
-        <SidebarDemo>
-          <main className="flex-1 p-8">{children}</main>
-        </SidebarDemo>
+    <div className="h-screen flex">
+      {/* LEFT */}
+      <div className="w-[14%] md:w-[8%] lg:w-[16%] xl:w-[14%] p-4 bg-white ">
+        <Link
+          href="/"
+          className="flex items-center justify-center lg:justify-start gap-2"
+        >
+          <Image src="/logo.png" alt="logo" width={220} height={120} className="bg-black rounded-lg bg-opacity-50" />
+          <span className="hidden lg:block font-bold"></span>
+        </Link>
+        <Menu />
       </div>
-    </SessionProvider>
-
+      {/* RIGHT */}
+      <div className="w-[86%] md:w-[92%] lg:w-[84%] xl:w-[86%] bg-[#f3f2f2] overflow-scroll flex flex-col">
+        <Navbar />
+        {children}
+      </div>
+    </div>
   );
-};
-
-export default MainLayout;
-
+}

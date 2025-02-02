@@ -3,7 +3,7 @@ import prisma from "@/db";
 import bcrypt from "bcrypt";
 import { sendRegistrationEmail } from "@/lib/email";
 import { randomBytes } from "crypto";
-import { NextResponse } from "next/server"; // Import NextResponse
+import { NextResponse } from "next/server"; 
 
 export async function POST(req: NextRequest) {
   try {
@@ -16,13 +16,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: "Request body is empty" }, { status: 400 });
     }
 
-    const { name, phone, email, role, createdBy, schoolId } = requestBody;
+    const { name, phone, email, role, createdBy, schoolId , city, state,country,pincode,bloodType,sex } = requestBody;
     console.log("Parsed data:", { name, phone, email, role, createdBy, schoolId });
 
 
-    if (!name || !phone || !email || !role || !createdBy || !schoolId) {
+    if (!name || !phone || !email || !role || !createdBy || !schoolId || !city || !state || !country || !state || !pincode || !bloodType || !sex) {
       console.error("Missing required fields.");
-      return NextResponse.json({ message: "All fields (name, phone, email, role, createdBy, schoolId) are required" }, { status: 400 });
+      return NextResponse.json({ message: "All fields (name, phone, email, role, createdBy, schoolId, city,state,country,pincode,sex,bloodType) are required" }, { status: 400 });
     }
 
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -76,7 +76,13 @@ export async function POST(req: NextRequest) {
       data: {
         name,
         phone,
-        email,
+        email, 
+        city,
+        state,
+        country,
+        pincode,
+        bloodType,
+        sex:"FEMALE",
         password: hashedPassword,
         role,
         school: {

@@ -13,12 +13,12 @@ import { SessionProvider, signIn, signOut, useSession } from "next-auth/react";
 
 
 
-export default function Realnavbar(){
+export default function Realnavbar() {
   return (
     <>
-    <SessionProvider >
-    <Navbar />
-    </SessionProvider>
+      <SessionProvider >
+        <Navbar />
+      </SessionProvider>
     </>
   )
 }
@@ -37,8 +37,8 @@ export function Navbar() {
     { label: "Features", href: "#features" },
     { label: "About", href: "#about" },
     { label: "Modules", href: "#modules" },
-    { label: "Pricing", href: "#pricing" },  
-          
+    { label: "Pricing", href: "#pricing" },
+
   ];
 
   if (status === "loading") {
@@ -48,13 +48,12 @@ export function Navbar() {
   return (
 
     <>
-    
+
       <motion.header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled
-            ? "bg-background/80 backdrop-blur-xl border-b border-primary/10 shadow-lg shadow-primary/5 py-2"
-            : ""
-        }`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
+          ? "bg-gray-100/80 backdrop-blur-xl border-b border-primary/10 shadow-lg shadow-primary/5 py-2"
+          : ""
+          }`}
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
@@ -82,7 +81,7 @@ export function Navbar() {
               {session ? (
                 <>
                   <Link href={`/${session.user.role || "/superadmin"}`}>
-                  
+
 
                     <Button variant="glow" className="group">
                       <span>Dashboard</span>
