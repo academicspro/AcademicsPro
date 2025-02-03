@@ -1,0 +1,12 @@
+.rating {
+    i {
+        &.filled {
+            color: $warning;
+        }
+    }
+
+    .rating-rate {
+        color: $black;
+        margin-left: 5px;
+    }
+}

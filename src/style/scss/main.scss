@@ -1,0 +1,78 @@
+/****** Utils ******/
+@import "utils/variables";
+@import "utils/mixins";
+
+/******* Base *******/
+@import "base/base";
+@import "base/background";
+
+/****** Layout ******/
+@import "layout/common";
+@import "layout/content";
+@import "layout/header";
+@import "layout/sidebar";
+@import "layout/notification";
+@import "layout/theme-settings";
+
+/******* Components ******/
+@import "components/avatar";
+@import "components/boostrap";
+@import "components/button";
+@import "components/badge";
+@import "components/border";
+@import "components/calendar";
+@import "components/chart";
+@import "components/call";
+@import "components/chat";
+@import "components/dropdown";
+@import "components/email";
+@import "components/file-manager";
+@import "components/file-upload";
+@import "components/icons";
+@import "components/progress";
+@import "components/pagination";
+@import "components/font";
+@import "components/typography";
+@import "components/alerts";
+@import "components/popovers";
+@import "components/forms";
+@import "components/notes";
+@import "components/todo";
+@import "components/tables";
+@import "components/accordion";
+@import "components/breadcrumb";
+@import "components/cards";
+@import "components/tooltips";
+@import "components/navs-tabs";
+@import "components/ribbon";
+@import "components/popup";
+@import "components/grid";
+@import "components/timeline";
+@import "components/sweetalert";
+
+/******* Pages ******/
+@import "pages/student";
+@import "pages/student-details";
+@import "pages/notice-board";
+@import "pages/events";
+@import "pages/settings";
+@import "pages/blog";
+@import "pages/dashboard";
+@import "pages/login";
+@import "pages/error";
+@import "pages/invoice";
+@import "pages/student-dashboard";
+@import "pages/parent-dashboard";
+@import "pages/teacher-dashboard";
+@import "pages/themes";
+
+
+/******* Vendors ******/
+@import "vendors/select2";
+@import "vendors/datatables";
+@import "vendors/rangepicker-plugin";
+
+
+
+
+

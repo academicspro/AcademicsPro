@@ -1,0 +1,14 @@
+.board-hover {
+    @include transition(all 0.5s ease);
+    .board-action {
+        @include transition(all 0.5s ease);
+        display: none !important;
+    }
+    &:hover {
+        border-color: $primary;
+        @include transition(all 0.5s ease);
+        .board-action {
+           display: flex !important;
+        }
+    }
+}
