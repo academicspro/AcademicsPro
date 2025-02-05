@@ -1,62 +1,79 @@
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import {prisma} from "../../db/prisma";
-import { uploadFile } from "../../config/upload";
-import { validationResult } from "express-validator";
-import dotenv from "dotenv";
 
-dotenv.config();
+import { prisma } from "../../db/prisma";
+import { uploadFile } from "../../config/upload";
+import { sendRegistrationEmail } from "../../config/email";
 
 export const registerSuperAdmin = async (req: Request, res: Response) => {
   try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+    const {
+      name,
+      email,
+      phone,
+      address,
+      city,
+      state,
+      country,
+      pincode,
+      password,
+    } = req.body;
+    const profilePicFile = req.file;
+
+    // Validate required fields
+    if (
+      !name ||
+      !email ||
+      !phone ||
+      !address ||
+      !city ||
+      !state ||
+      !country ||
+      !pincode
+    ) {
+      res.status(400).json({ error: "All fields are required." });
+      return;
     }
 
-    const { name, email, phone, password, sex } = req.body;
-
-    // Check if superadmin exists
-    const existingUser = await prisma.user.findUnique({ where: { email } });
-    if (existingUser) {
-      return res.status(400).json({ message: "Super Admin already exists." });
+    // Check if file is uploaded
+    if (!profilePicFile || !profilePicFile.buffer) {
+      res.status(400).json({ error: "Profile picture is required." });
+      return;
     }
 
-    // Hash password
+    // Upload profile picture to Cloudinary
+    const { publicId, url } = await uploadFile(
+      profilePicFile.buffer,
+      "profile_pics"
+    );
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    let profilePicUrl = "";
-    let profilePicId = "";
-    if (req.file) {
-      const uploadResult = await uploadFile(req.file, "profile_pics");
-      profilePicUrl = uploadResult.url;
-      profilePicId = uploadResult.publicId;
-    }
-
-    // Create Super Admin
-    const superAdmin = await prisma.user.create({
+    // Create user
+    const user = await prisma.user.create({
       data: {
         name,
         email,
         phone,
-        sex,
+        address,
+        city,
+        state,
+        country,
+        pincode,
+        sex: "FEMALE",
+        bloodType: "O+",
+        profilePic: url,
         password: hashedPassword,
-        profilePic: profilePicUrl,
         role: "superadmin",
       },
     });
 
-    // Generate JWT Token
-    const token = jwt.sign(
-      { id: superAdmin.id, role: superAdmin.role },
-      process.env.JWT_SECRET as string,
-      { expiresIn: "7d" }
-    );
+    // Send registration email
+    await sendRegistrationEmail(email, password);
 
-    res.status(201).json({ message: "Super Admin registered successfully", token, superAdmin });
+    res.status(200).json({ message: "Student created successfully", user });
   } catch (error) {
-    console.error("Register Super Admin Error:", error);
-    res.status(500).json({ message: "Internal server error" });
+    console.error("Error creating Student:", error);
+    res.status(500).json({ error: "Something went wrong. Please try again." });
   }
 };
