@@ -43,7 +43,7 @@ model User {
   country            String?
   pincode            String?
   bloodType          String?
-  sex                UserSex
+  sex                UserSex?
   role               Role                 @default(superadmin)
   schoolId           String?
   school             School?              @relation(fields: [schoolId], references: [id])

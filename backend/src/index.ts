@@ -1,18 +1,23 @@
-import  express from "express";
-import { registerSchool } from "./controller/authController";
-const app = express();
+import express from "express";
 
+import  schoolRoute  from "./routes/superadmin/schoolRoute";
+import superAdminRoute from "./routes/superadmin/superAdminRoute";
+
+
+const app = express();
 
 app.use(express.json());
 
+// Routes Started
 
-// Routes Started 
+// app.use("/api/v1", registerSuperAdmin);
+app.use("/api/v1",schoolRoute)
 
-app.use("/api/v1",registerSchool);
+// Auth Routes
+app.use("/api/v1", superAdminRoute);
 
-
-const PORT = process.env.PORT || 3002;
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });
