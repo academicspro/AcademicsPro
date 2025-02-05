@@ -57,8 +57,8 @@ const Login2 = () => {
                               Please enter your details to sign in
                             </p>
                           </div>
-                          <div className="mt-4">
-                            <div className="d-flex align-items-center justify-content-center flex-wrap">
+                          {/* <div className="mt-4"> */}
+                            {/* <div className="d-flex align-items-center justify-content-center flex-wrap">
                               <div className="text-center me-2 flex-fill">
                                 <Link
                                   to="#"
@@ -99,7 +99,7 @@ const Login2 = () => {
                           </div>
                           <div className="login-or">
                             <span className="span-or">Or</span>
-                          </div>
+                          </div> */}
                           <div className="mb-3 ">
                             <label className="form-label">Email Address</label>
                             <div className="input-icon mb-3 position-relative">
@@ -142,7 +142,7 @@ const Login2 = () => {
                             </div>
                             <div className="text-end ">
                               <Link
-                                to={routes.forgotPassword}
+                                to={routes.forgotPassword2}
                                 className="link-danger"
                               >
                                 Forgot Password?
@@ -158,7 +158,7 @@ const Login2 = () => {
                               Sign In
                             </button>
                           </div>
-                          <div className="text-center">
+                          {/* <div className="text-center">
                             <h6 className="fw-normal text-dark mb-0">
                               Don’t have an account?{" "}
                               <Link to={routes.register2} className="hover-a ">
@@ -166,7 +166,7 @@ const Login2 = () => {
                                 Create Account
                               </Link>
                             </h6>
-                          </div>
+                          </div> */}
                         </div>
                       </div>
                       <div className="mt-5 text-center">
