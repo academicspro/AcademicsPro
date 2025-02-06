@@ -5,6 +5,9 @@ import { prisma } from "../../db/prisma";
 import { uploadFile } from "../../config/upload";
 import { sendRegistrationEmail } from "../../config/email";
 
+
+// Register Super Admin
+
 export const registerSuperAdmin = async (req: Request, res: Response) => {
   try {
     const {
@@ -77,3 +80,12 @@ export const registerSuperAdmin = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Something went wrong. Please try again." });
   }
 };
+
+
+// Get all Super Admins
+
+// Get Super Admin by ID
+
+// Update Super Admin
+
+// Delete Super Admin

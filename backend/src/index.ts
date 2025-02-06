@@ -1,14 +1,31 @@
 import express from "express";
+import cors from "cors";
+import morgan from "morgan";
 
 import  schoolRoute  from "./routes/superadmin/schoolRoute";
 import superAdminRoute from "./routes/superadmin/superAdminRoute";
 import signinRoute from "./routes/signin/signinRoute";
 import forgotRoute from "./routes/forgot-password/forgotRoute";
 
-
 const app = express();
 
-app.use(express.json());
+app.use(cors()); 
+app.use(express.json()); 
+
+
+app.use(
+  morgan(
+    ":method :url :status :res[content-length] - :response-time ms :date[iso]"
+  )
+);
+
+
+app.get("/api/v1/health", (req, res) => {
+  res.send("Backend is live");
+});
+
+
+
 
 // Routes Started
 
