@@ -1,11 +1,15 @@
 import express from 'express';
-import { registerSuperAdmin } from '../../controller/superadmin/registerSuperAdminController';
+import { deleteSuperAdmin, getAllSuperAdmin, getSuperAdminById, registerSuperAdmin, updateSuperAdmin } from '../../controller/superadmin/registerSuperAdminController';
 import multer from 'multer';
 
 const router = express.Router();
 const upload = multer();
 
-router.post('/register/superadmin',upload.single("profilePic"), registerSuperAdmin);
+router.post('/superadmin',upload.single("profilePic"), registerSuperAdmin);
+router.get('/superadmin',getAllSuperAdmin);
+router.get('/superadmin/:id',getSuperAdminById);
+router.put('/superadmin/:id',updateSuperAdmin);
+router.delete('/superadmin/:id',deleteSuperAdmin);
 
 
 export default router;

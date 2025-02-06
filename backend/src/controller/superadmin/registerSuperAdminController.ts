@@ -84,8 +84,122 @@ export const registerSuperAdmin = async (req: Request, res: Response) => {
 
 // Get all Super Admins
 
+export const getAllSuperAdmin = async (req: Request, res: Response) => {
+
+  try {
+    const superAdmins = await prisma.user.findMany({
+      where: {
+        role: "superadmin",
+      },
+    });
+
+    res.status(200).json(superAdmins);
+  } catch (error) {
+    console.error("Error getting Super Admins:", error);
+    res.status(500).json({ error: "Something went wrong. Please try again." });
+  }
+  
+};
+
+
+
 // Get Super Admin by ID
+
+export const getSuperAdminById = async (req: Request, res: Response) => {
+
+  try {
+    const { id } = req.params;
+
+    const superAdmin = await prisma.user.findUnique({
+      where: {id },
+    });
+
+    if (!superAdmin) {
+      res.status(404).json({ error: "Super Admin not found." });
+      return;
+    }
+
+    res.status(200).json(superAdmin);
+  } catch (error) {
+    console.error("Error getting Super Admin:", error);
+    res.status(500).json({ error: "Something went wrong. Please try again." });
+  }
+  
+};
 
 // Update Super Admin
 
+export const updateSuperAdmin = async (req: Request, res: Response) => {
+
+  try {
+    const { id } = req.params;
+    const {
+      name,
+      email,
+      phone,
+      address,
+      city,
+      state,
+      country,
+      pincode,
+      
+    } = req.body;
+
+    const superAdmin = await prisma.user.findUnique({
+      where: { id },
+    });
+
+    if (!superAdmin) {
+      res.status(404).json({ error: "Super Admin not found." });
+      return;
+    }
+
+    const updatedSuperAdmin = await prisma.user.update({
+      where: { id },
+      data: {
+        name,
+        email,
+        phone,
+        address,
+        city,
+        state,
+        country,
+        pincode,
+      },
+    });
+
+    res.status(200).json(updatedSuperAdmin);
+  } catch (error) {
+    console.error("Error updating Super Admin:", error);
+    res.status(500).json({ error: "Something went wrong. Please try again." });
+  }
+  
+};
+
 // Delete Super Admin
+
+export const deleteSuperAdmin = async (req: Request, res: Response) => {
+
+  try {
+    const { id } = req.params;
+
+    const superAdmin = await prisma.user.findUnique({
+      where: { id },
+    });
+
+    if (!superAdmin) {
+      res.status(404).json({ error: "Super Admin not found." });
+      return;
+    }
+
+    await prisma.user.delete({
+      where: { id },
+    });
+
+    res.status(200).json({ message: "Super Admin deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting Super Admin:", error);
+    res.status(500).json({ error: "Something went wrong. Please try again." });
+  }
+  
+};
