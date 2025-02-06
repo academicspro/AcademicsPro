@@ -5,7 +5,8 @@
   "scripts": {
     "start": "tsc && nodemon dist/index.js",
     "build": "tsc && prisma generate",
-    "dev": "nodemon --watch src src/index.ts"
+    "dev": "nodemon --watch src src/index.ts",
+    "postinstall": "prisma generate"
   },
   "keywords": [],
   "author": "",
