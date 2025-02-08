@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
-
+import chalk from "chalk";
+import { Response,Request } from "express";
 
 import schoolRoute from "./routes/superadmin/schoolRoute";
 import superAdminRoute from "./routes/superadmin/superAdminRoute";
@@ -12,7 +13,16 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-
+// Hacker-style logging middleware
+app.use(
+  morgan((tokens, req:Request, res:Response) => {
+    return chalk.greenBright.bold(`[💻] ${tokens.method(req, res)}`) +
+      chalk.cyan(` ${tokens.url(req, res)}`) +
+      chalk.yellowBright(` ${tokens.status(req, res)}`) +
+      chalk.magentaBright(` ${tokens['response-time'](req, res)}ms`) +
+      chalk.red(` [IP: ${req.ip}]`);
+  })
+);
 
 app.get("/", (req, res) => {
   res.send("Backend is live");
@@ -32,3 +42,7 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+function morgan(arg0: (tokens: any, req: Request, res: Response) => string): any {
+  throw new Error("Function not implemented.");
+}
+
