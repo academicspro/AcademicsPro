@@ -19,6 +19,7 @@ export const SidebarData = [
           { label: "Teacher Dashboard", link: routes.teacherDashboard },
           { label: "Student Dashboard", link: routes.studentDashboard },
           { label: "Parent Dashboard", link: routes.parentDashboard },
+          
         ],
       },
       {

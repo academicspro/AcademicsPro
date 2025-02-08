@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "tsc && nodemon dist/index.js",
+    "start": " nodemon dist/index.js",
     "build": "tsc && prisma generate",
     "dev": "nodemon --watch src src/index.ts",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "vercel-build": "tsc && prisma generate"
   },
   "keywords": [],
   "author": "",

@@ -189,8 +189,8 @@ model Class {
   name     String @unique
   capacity Int
 
-  supervisorId  String?
-  supervisor    Teacher?       @relation(fields: [supervisorId], references: [id])
+  teacherId  String?
+  teacher    Teacher?       @relation(fields: [teacherId], references: [id])
   lessons       Lesson[]
   students      Student[]
   gradeId       String
@@ -204,7 +204,7 @@ model Subject {
   name     String    @unique
   teachers Teacher[]
   lessons  Lesson[]
-}
+}  
 
 model Lesson {
   id        String   @id @default(cuid())
@@ -303,23 +303,23 @@ enum Day {
   FRIDAY
 }
 
-// Fees
-// chat room
-// notification
+// Fees take key secret and api from admin dashboard
 // doubt forums
-//white board
-// video call
-// download reports 
 // competitions
 // leaderboard
-// student chat with teacher
-// teacher chat with parent
-// PYQ With Soultion
 // Roadmap Creation
 // Todo List
-// Self enhacement -> quiz , Newspaper reading 
+// PYQ With Soultion
 // goverment Exams
-// Custom Sign in For app
+// chat room
+//white board
+// zoom meeting call
+// student chat with teacher
+// teacher chat with parent
+// Self enhacement -> quiz , Newspaper reading 
+// download reports 
+// notification
+
 
 // <--------------------V1 Completed------------------------->
 
