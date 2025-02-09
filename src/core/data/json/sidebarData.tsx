@@ -1,6 +1,8 @@
 import { all_routes } from "../../../feature-module/router/all_routes";
 const routes = all_routes;
 
+
+
 export const SidebarData = [
   {
     label: "MAIN",
@@ -15,7 +17,7 @@ export const SidebarData = [
         showSubRoute: false,
 
         submenuItems: [
-          { label: "Admin Dashboard", link: routes.adminDashboard },
+          { label: "Admin Dashboard", link: routes.adminDashboard  },
           { label: "Teacher Dashboard", link: routes.teacherDashboard },
           { label: "Student Dashboard", link: routes.studentDashboard },
           { label: "Parent Dashboard", link: routes.parentDashboard },
@@ -1224,3 +1226,6 @@ export const SidebarData = [
   //   ],
   // },
 ];
+
+
+

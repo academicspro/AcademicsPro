@@ -478,7 +478,7 @@ const ThemeSettings = () => {
                 </div>
               </div>
             </div>
-            <div className="accordion-item">
+            {/* <div className="accordion-item">
               <h2 className="accordion-header">
                 <button
                   className="accordion-button text-dark fs-16"
@@ -632,7 +632,7 @@ const ThemeSettings = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
             <div className="accordion-item">
               <h2 className="accordion-header">
                 <button
