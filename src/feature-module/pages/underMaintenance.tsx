@@ -30,13 +30,13 @@ const UnderMaintenance = () => {
                 Please check back later, We are working hard to get <br />
                 everything just right.
               </p>
-              <Link
+              {/* <Link
                 to={routes.adminDashboard}
                 className="btn btn-primary d-flex align-items-center"
               >
                 <i className="ti ti-arrow-left me-2" />
                 Back to Dashboard
-              </Link>
+              </Link> */}
             </div>
             <div className="text-center p-3">
               <p>Copyright © 2024 - Academics Pro</p>
