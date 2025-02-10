@@ -22,6 +22,10 @@ export const registerstudent = async (req: Request, res: Response) => {
       schoolId,
       sex,
       bloodType,
+      gradeId,
+      parentId,
+      classId,
+
     } = req.body;
     const profilePicFile = req.file;
 
@@ -37,7 +41,11 @@ export const registerstudent = async (req: Request, res: Response) => {
       !pincode ||
       !schoolId ||
       !sex ||
-      !bloodType
+      !bloodType ||
+      !gradeId ||
+      !parentId ||
+      !classId 
+      
     ) {
       res.status(400).json({ error: "All fields are required." });
       return;
@@ -83,16 +91,24 @@ export const registerstudent = async (req: Request, res: Response) => {
     // Send registration email
     await sendRegistrationEmail(email, password);
 
-    // const student = await prisma.student.create({
-    //   data: {
-    //     user: {
-    //       connect: { id: user.id },
-    //     },
-    //     school: {
-    //       connect: { id: schoolId },
-    //     },
-    //   },
-    // });
+    const student = await prisma.student.create({
+      data: {
+        
+        user: {
+          connect: { id: user.id },
+        },
+        school: {
+          connect: { id: schoolId },
+        },
+      
+        parent: {
+          connect: { id: parentId },
+        },
+        class: {
+          connect: { id: classId },
+        },
+      },
+    });
 
     res.status(200).json({ message: "student created successfully", user });
   } catch (error) {

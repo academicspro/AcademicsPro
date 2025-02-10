@@ -1,28 +1,33 @@
 import express from "express";
 import cors from "cors";
-// import chalk from "chalk";
-// import morgan from "morgan"; 
-// import { Response,Request } from "express";
+
 
 import schoolRoute from "./routes/superadmin/schoolRoute";
 import superAdminRoute from "./routes/superadmin/superAdminRoute";
 import signinRoute from "./routes/signin/signinRoute";
 import forgotRoute from "./routes/forgot-password/forgotRoute";
+import teacherRoutes from "./routes/admin/schoolauthroutes/teacherRoutes";
+import studentRoutes from "./routes/admin/schoolauthroutes/studentRoutes";
+import parentsRoutes from "./routes/admin/schoolauthroutes/parentsRoutes";
+import accountRoutes from "./routes/admin/schoolauthroutes/accountRoutes";
+import transportRoutes from "./routes/admin/schoolauthroutes/transportRoutes";
+import hostelRoutes from "./routes/admin/schoolauthroutes/hostelRoutes";
+import assignmentRoute from "./routes/dashboard/teacher/assignmentRoute";
+import attendenceRoute from "./routes/dashboard/teacher/attendenceRoute";
+import classRoute from "./routes/dashboard/teacher/classRoute";
+import examRoute from "./routes/dashboard/teacher/examRoute";
+import gradeRoute from "./routes/dashboard/teacher/gradeRoute";
+import lessonRoute from "./routes/dashboard/teacher/lessonRoute";
+import subjectRoute from "./routes/dashboard/teacher/subjectRoute";
+import resultRoute from "./routes/dashboard/teacher/resultRoute";
+import AdminregisterRoute from "./routes/superadmin/AdminregisterRoute";
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-// app.use(
-//   morgan((tokens, req: Request, res: Response) => {
-//     return chalk.greenBright.bold(`[💻] ${tokens.method(req, res)}`) +
-//       chalk.cyan(` ${tokens.url(req, res)}`) +
-//       chalk.yellowBright(` ${tokens.status(req, res)}`) +
-//       chalk.magentaBright(` ${tokens['response-time'](req, res)}ms`) +
-//       chalk.red(` [IP: ${req.ip}]`);
-//   })
-// );
+
 
 app.get("/", (req, res) => {
   res.send("Backend is live");
@@ -30,12 +35,51 @@ app.get("/", (req, res) => {
 
 // Routes Started
 
-app.use("/api/v1", schoolRoute);
 
 // Auth Routes
+app.use("/api/v1", schoolRoute);
 app.use("/api/v1", superAdminRoute);
 app.use("/api/v1", signinRoute);
 app.use("/api/v1", forgotRoute);
+app.use("/api/v1", AdminregisterRoute);
+
+// School Auth Routes
+app.use('/api/v1',teacherRoutes);
+app.use('api/v1',studentRoutes);
+app.use('api/v1',parentsRoutes);
+app.use('api/v1',accountRoutes);
+app.use('api/v1',transportRoutes);
+app.use('api/v1',hostelRoutes);
+
+
+// Teacher Routes
+app.use('api/v1',assignmentRoute);
+app.use('api/v1',attendenceRoute); // Pending Route
+app.use('api/v1',classRoute);
+app.use('api/v1',examRoute);
+app.use('api/v1',gradeRoute);
+app.use('api/v1',lessonRoute);
+app.use('api/v1',resultRoute); // Pending Route
+app.use('api/v1',subjectRoute);
+
+// Student Routes
+
+// Parent Routes
+
+// Hostel Routes
+
+// Library Routes
+
+// Transport Routes
+
+
+
+// Admin Routes
+
+
+
+// Super Admin Routes
+
 
 const PORT = process.env.PORT || 3000;
 

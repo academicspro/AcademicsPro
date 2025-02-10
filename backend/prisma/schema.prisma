@@ -92,7 +92,7 @@ model Student {
   schoolId    String
   userId      String?
   parentId    String
-  birthday    DateTime
+
   parent      Parent       @relation(fields: [parentId], references: [id])
   user        User?        @relation(fields: [userId], references: [id])
   school      School       @relation(fields: [schoolId], references: [id])
@@ -100,10 +100,11 @@ model Student {
   updatedAt   DateTime     @default(now()) @updatedAt
   classId     String
   class       Class        @relation(fields: [classId], references: [id])
-  gradeId     String
-  grade       Grade        @relation(fields: [gradeId], references: [id])
+  // gradeId     String
+  // grade       Grade        @relation(fields: [gradeId], references: [id])
   attendances Attendance[]
   results     Result[]
+  grades      Grade[]
 }
 
 model Teacher {
@@ -197,6 +198,7 @@ model Class {
   grade         Grade          @relation(fields: [gradeId], references: [id])
   events        Event[]
   announcements Announcement[]
+
 }
 
 model Subject {
@@ -312,7 +314,7 @@ enum Day {
 // PYQ With Soultion
 // goverment Exams
 // chat room
-//white board
+// white board
 // zoom meeting call
 // student chat with teacher
 // teacher chat with parent
