@@ -18,7 +18,6 @@ export const registerteacher = async (req: Request, res: Response) => {
       state,
       country,
       pincode,
-      password,
       schoolId,
       sex,
       bloodType,
@@ -50,6 +49,7 @@ export const registerteacher = async (req: Request, res: Response) => {
     }
 
     // Upload profile picture to Cloudinary
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { publicId, url } = await uploadFile(
       profilePicFile.buffer,
       "profile_pics"
@@ -81,7 +81,7 @@ export const registerteacher = async (req: Request, res: Response) => {
     });
 
     // Send registration email
-    await sendRegistrationEmail(email, password);
+    await sendRegistrationEmail(email, tempPassword);
 
     const teacher = await prisma.teacher.create({
       data: {
@@ -94,7 +94,7 @@ export const registerteacher = async (req: Request, res: Response) => {
       },
     });
 
-    res.status(200).json({ message: "teacher created successfully", user });
+    res.status(200).json({ message: "teacher created successfully", teacher });
   } catch (error) {
     console.error("Error creating teacher:", error);
     res.status(500).json({ error: "Something went wrong. Please try again." });

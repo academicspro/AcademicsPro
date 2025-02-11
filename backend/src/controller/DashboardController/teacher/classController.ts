@@ -5,10 +5,20 @@ import { prisma } from "../../../db/prisma";
 
 export const createClass = async (req: Request, res: Response) => {
     try {
-      const { name, capacity, gradeId, teacherId } = req.body;
+      const { name, capacity,  teacherId } = req.body;
+
+      const teacher = await prisma.teacher.findUnique({ where: { id: teacherId } });
+      if (!teacher) {
+         res.status(400).json({ error: "Teacher not found" });
+         return;
+      }
+
       const newClass = await prisma.class.create({
-        data: { name, capacity, gradeId, teacherId },
+        data: { name, capacity,  
+          teacher: { connect: { id: teacherId } }
+         },
       });
+      console.log(newClass);
       res.json(newClass);
     } catch (error) {
       res.status(500).json({ error: (error as any).message });
@@ -44,10 +54,10 @@ export const getClassById = async (req: Request, res: Response) => {
   export const updateClass = async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
-      const { name, capacity, gradeId, teacherId } = req.body;
+      const { name, capacity,  teacherId } = req.body;
       const updatedClass = await prisma.class.update({
         where: { id },
-        data: { name, capacity, gradeId, teacherId },
+        data: { name, capacity,  teacherId },
       });
       res.json(updatedClass);
     } catch (error) {

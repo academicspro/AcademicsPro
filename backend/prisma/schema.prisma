@@ -194,8 +194,9 @@ model Class {
   teacher    Teacher?       @relation(fields: [teacherId], references: [id])
   lessons       Lesson[]
   students      Student[]
-  gradeId       String
-  grade         Grade          @relation(fields: [gradeId], references: [id])
+  // gradeId       String
+  // grade         Grade          @relation(fields: [gradeId], references: [id])
+  grade  Grade[]
   events        Event[]
   announcements Announcement[]
 

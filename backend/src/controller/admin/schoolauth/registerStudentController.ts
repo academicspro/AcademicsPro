@@ -91,24 +91,24 @@ export const registerstudent = async (req: Request, res: Response) => {
     // Send registration email
     await sendRegistrationEmail(email, password);
 
-    const student = await prisma.student.create({
-      data: {
+    // const student = await prisma.student.create({
+    //   data: {
         
-        user: {
-          connect: { id: user.id },
-        },
-        school: {
-          connect: { id: schoolId },
-        },
+    //     user: {
+    //       connect: { id: user.id },
+    //     },
+    //     school: {
+    //       connect: { id: schoolId },
+    //     },
       
-        parent: {
-          connect: { id: parentId },
-        },
-        class: {
-          connect: { id: classId },
-        },
-      },
-    });
+    //     parent: {
+    //       connect: { id: parentId },
+    //     },
+    //     class: {
+    //       connect: { id: classId },
+    //     },
+    //   },
+    // });
 
     res.status(200).json({ message: "student created successfully", user });
   } catch (error) {
