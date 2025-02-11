@@ -21,6 +21,7 @@ import lessonRoute from "./routes/dashboard/teacher/lessonRoute";
 import subjectRoute from "./routes/dashboard/teacher/subjectRoute";
 import resultRoute from "./routes/dashboard/teacher/resultRoute";
 import AdminregisterRoute from "./routes/superadmin/AdminregisterRoute";
+import userRoutes from "./routes/superadmin/userRoutes";
 
 const app = express();
 
@@ -35,6 +36,10 @@ app.get("/", (req, res) => {
 
 // Routes Started
 
+
+// User Routes
+
+app.use("/api/v1", userRoutes)
 
 // Auth Routes
 app.use("/api/v1", schoolRoute);
