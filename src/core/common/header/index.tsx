@@ -89,10 +89,10 @@ const Header = () => {
             <ImageWithBasePath src="assets/img/logo.svg" alt="Logo" />
           </Link>
           <Link to={routes.adminDashboard} className="logo-small">
-            <ImageWithBasePath src="assets/img/logo-small.svg" alt="Logo" />
+            <ImageWithBasePath src="assets/img/logo.svg" alt="Logo" />
           </Link>
-          <Link to={routes.adminDashboard} className="dark-logo">
-            <ImageWithBasePath src="assets/img/logo-dark.svg" alt="Logo" />
+          <Link to={routes.adminDashboard} className="dark">
+            <ImageWithBasePath src="assets/img/logo.svg" alt="Logo" />
           </Link>
           <Link id="toggle_btn" to="#" onClick={handleToggleMiniSidebar}>
             <i className="ti ti-menu-deep" />
