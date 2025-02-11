@@ -91,9 +91,9 @@ model Student {
 
   schoolId    String
   userId      String?
-  parentId    String
+  // parentId    String
 
-  parent      Parent       @relation(fields: [parentId], references: [id])
+  // parent      Parent       @relation(fields: [parentId], references: [id])
   user        User?        @relation(fields: [userId], references: [id])
   school      School       @relation(fields: [schoolId], references: [id])
   createdAt   DateTime     @default(now())
@@ -104,7 +104,10 @@ model Student {
   // grade       Grade        @relation(fields: [gradeId], references: [id])
   attendances Attendance[]
   results     Result[]
-  grades      Grade[]
+  // grades      Grade[]
+
+  Grade Grade[]
+  parent Parent[]
 }
 
 model Teacher {
@@ -180,8 +183,8 @@ model Account {
 model Grade {
   id    String @id @default(cuid())
   level Int    @unique
-
-  students Student[]
+  studentId String
+  students  Student @relation(fields: [studentId], references: [id])
   classess Class[]
 }
 

@@ -81,7 +81,7 @@ export const registerAdmin = async (req: Request, res: Response) => {
     });
 
     // Send registration email
-    await sendRegistrationEmail(email, password);
+    await sendRegistrationEmail(email, tempPassword);
 
     // const teacher = await prisma.admin.create({
     //   data: {

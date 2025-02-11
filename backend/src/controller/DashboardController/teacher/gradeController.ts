@@ -5,8 +5,19 @@ import { Request, Response } from "express";
 
 export const createGrade = async (req: Request, res: Response) => {
     try {
-      const { level } = req.body;
-      const grade = await prisma.grade.create({ data: { level } });
+      const { level , studentId} = req.body;
+
+      if (!level) {
+         res.status(400).json({ error: "Level is required" });
+         return;
+      }
+      const grade = await prisma.grade.create({ data: { 
+        level ,
+        students :{
+            connect: { id: studentId }
+          }
+
+      } });
       res.json(grade);
     } catch (error) {
       res.status(500).json({ error: (error as Error).message });
