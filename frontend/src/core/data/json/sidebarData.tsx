@@ -1163,7 +1163,7 @@ export const SidebarData = [
           },
           { label: "Form Validation", link: routes.formValidation },
           { label: "Select", link: routes.reactSelect },
-          // { label: "Form Wizard", link: routes.formWizard },
+          { label: "Form Wizard", link: routes.formWizard },
         ],
       },
       {
