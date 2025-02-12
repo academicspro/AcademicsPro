@@ -1,6 +1,17 @@
 # Academics Pro – The Ultimate School Management System
 
 
+***StartDocker***
+docker-compose up --build -d
+
+
+Open a shell inside the backend container:
+
+docker exec -it academicspro-backend-1 /bin/sh
+
+
+
+# hii there
 
 ## 📌 Overview
 Academics Pro is an **AI-powered, all-in-one school management system** designed to simplify academic and administrative operations. It offers a centralized platform for **students, teachers, parents, administrators, and support staff**, ensuring seamless collaboration, automation, and efficiency in education management.
