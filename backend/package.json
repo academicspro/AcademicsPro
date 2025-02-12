@@ -5,9 +5,7 @@
   "scripts": {
     "start": " nodemon dist/index.js",
     "build": "tsc && prisma generate",
-    "dev": "nodemon --watch src src/index.ts",
-    "postinstall": "prisma generate",
-    "vercel-build": "tsc && prisma generate"
+    "dev": "nodemon --watch src src/index.ts"
   },
   "keywords": [],
   "author": "",

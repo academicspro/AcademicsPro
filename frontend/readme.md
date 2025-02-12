@@ -1,7 +1,14 @@
 # Academics Pro – The Ultimate School Management System
 
 
-We Are Private Now
+***StartDocker***
+docker-compose up --build -d
+
+
+Open a shell inside the backend container:
+
+docker exec -it academicspro-backend-1 /bin/sh
+
 
 
 # hii there
