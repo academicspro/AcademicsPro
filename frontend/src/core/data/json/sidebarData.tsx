@@ -1,6 +1,17 @@
 import { all_routes } from "../../../feature-module/router/all_routes";
 const routes = all_routes;
 
+type MenuItem = {
+  label: string;
+  submenuOpen?: boolean;
+  showSubRoute?: boolean;
+  submenuHdr?: string;
+  submenuItems?: MenuItem[];
+  icon?: string;
+  link?: string;
+  roles?: string[];
+  [key: string]: any;
+};
 
 
 export const SidebarData = [
@@ -9,6 +20,7 @@ export const SidebarData = [
     submenuOpen: true,
     showSubRoute: false,
     submenuHdr: "Main",
+    // roles: ["admin", "teacher", "student", "parent"],
     submenuItems: [
       {
         label: "Dashboard",
@@ -17,10 +29,10 @@ export const SidebarData = [
         showSubRoute: false,
 
         submenuItems: [
-          { label: "Admin Dashboard", link: routes.adminDashboard  },
-          { label: "Teacher Dashboard", link: routes.teacherDashboard },
-          { label: "Student Dashboard", link: routes.studentDashboard },
-          { label: "Parent Dashboard", link: routes.parentDashboard },
+          { label: "Admin Dashboard", link: routes.adminDashboard,roles: ["admin"]  },
+          { label: "Teacher Dashboard", link: routes.teacherDashboard, roles: ["teacher"] },
+          { label: "Student Dashboard", link: routes.studentDashboard,roles: ["student"] },
+          { label: "Parent Dashboard", link: routes.parentDashboard,roles: ["parent"] },
           
         ],
       },
@@ -1228,4 +1240,26 @@ export const SidebarData = [
 ];
 
 
+// Function to filter menu items by role
+function filterMenuByRole(menuData: MenuItem[], userRole: string): MenuItem[] {
+  if (!menuData || !Array.isArray(menuData)) {
+    throw new Error('Invalid menu data. Expected an array.');
+  }
+  if (!userRole || typeof userRole !== 'string') {
+    throw new Error('Invalid user role. Expected a non-empty string.');
+  }
 
+return menuData.filter((menuItem) => {
+  if (menuItem.roles?.includes(userRole)) {
+    if (menuItem.submenuItems && 'submenuItems' in menuItem) {
+      menuItem.submenuItems = filterMenuByRole(menuItem.submenuItems, userRole);
+    }
+    return true;
+  }
+  return false;
+});
+}
+
+const userRole = "teacher";
+const filteredMenu = filterMenuByRole(SidebarData, userRole);
+console.log(`Filtered Menu for ${userRole}:`, filteredMenu);
