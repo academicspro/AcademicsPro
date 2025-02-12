@@ -1193,7 +1193,7 @@ export const SidebarData = [
       {
         label: "Changelog ",
         version: "v1.8.3",
-        link: "https://preschool.dreamstechnologies.com/documentation/changelog.html",
+        link: "https://wwww.academics-pro.com/",
         icon: "ti ti-exchange",
         showSubRoute: false,
       },
