@@ -8,7 +8,8 @@ export const createAnnouncement = async (req: Request, res: Response) => {
   
       
       if (!title || !description || !date) {
-        return res.status(400).json({ error: "Missing required fields: title, description" });
+         res.status(400).json({ error: "Missing required fields: title, description" });
+         return;
       }
   
       const announcement = await prisma.announcement.create({

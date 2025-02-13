@@ -22,6 +22,8 @@ import subjectRoute from "./routes/dashboard/teacher/subjectRoute";
 import resultRoute from "./routes/dashboard/teacher/resultRoute";
 import AdminregisterRoute from "./routes/superadmin/AdminregisterRoute";
 import userRoutes from "./routes/superadmin/userRoutes";
+import eventRoutes from "./routes/dashboard/admin/eventRoutes";
+import annoumcmentRoutes from "./routes/dashboard/admin/annoumcmentRoutes";
 
 const app = express();
 
@@ -81,6 +83,9 @@ app.use('/api/v1',subjectRoute);
 
 
 // Admin Routes
+
+app.use('/api/v1',eventRoutes);
+app.use('/api/v1',annoumcmentRoutes);
 
 
 

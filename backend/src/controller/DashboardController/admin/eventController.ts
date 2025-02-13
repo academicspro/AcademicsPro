@@ -11,11 +11,13 @@ export const createEvent = async (req: Request, res: Response) => {
   
       
       if (!title || !description || !startTime || !endTime) {
-        return res.status(400).json({ error: "Missing required fields: title, description, startTime, endTime" });
-      }
+         res.status(400).json({ error: "Missing required fields: title, description, startTime, endTime" });
+         return;
+        }
 
       if (new Date(startTime) >= new Date(endTime)) {
-        return res.status(400).json({ error: "startTime must be before endTime." });
+         res.status(400).json({ error: "startTime must be before endTime." });
+         return;
       }
   
       const event = await prisma.event.create({
@@ -76,7 +78,8 @@ export const createEvent = async (req: Request, res: Response) => {
             return;
         }
         if (new Date(startTime) >= new Date(endTime)) {
-            return res.status(400).json({ error: "startTime must be before endTime." });
+             res.status(400).json({ error: "startTime must be before endTime." });
+             return;
         }
         const event = await prisma.event.update({
             where: {id},
