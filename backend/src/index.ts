@@ -59,13 +59,14 @@ app.use('/api/v1',hostelRoutes);
 
 // Teacher Routes
 app.use('/api/v1',assignmentRoute);
-app.use('/api/v1',attendenceRoute); // Pending Route
+app.use('/api/v1',attendenceRoute);
 app.use('/api/v1',classRoute);
 app.use('/api/v1',examRoute);
 app.use('/api/v1',gradeRoute);
 app.use('/api/v1',lessonRoute);
-app.use('/api/v1',resultRoute); // Pending Route
+app.use('/api/v1',resultRoute);
 app.use('/api/v1',subjectRoute);
+
 
 // Student Routes
 
