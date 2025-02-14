@@ -65,6 +65,12 @@ model User {
   createdAt          DateTime             @default(now())
   updatedAt          DateTime             @default(now()) @updatedAt
   teacherId          String?
+  studentId          String?
+  parentId           String?
+  libraryId          String?
+  hostelId           String?
+  transportId        String?
+  accountId          String?
   teachers           Teacher[]
   parents            Parent[]
   libraries          Library[]
@@ -81,35 +87,24 @@ model User {
 
 model Student {
   id String @id @default(cuid())
-
   schoolId    String
   userId      String?
-  // parentId    String
-
-  // parent      Parent       @relation(fields: [parentId], references: [id])
   user        User?        @relation(fields: [userId], references: [id])
   school      School       @relation(fields: [schoolId], references: [id])
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @default(now()) @updatedAt
   classId     String
   class       Class        @relation(fields: [classId], references: [id])
-  // gradeId     String
-  // grade       Grade        @relation(fields: [gradeId], references: [id])
   attendances Attendance[]
   results     Result[]
-  // grades      Grade[]
-
   Grade Grade[]
   parent Parent[]
-
   Fee Fee[]
-
   Payment Payment[]
 }
 
 model Teacher {
   id String @id @default(cuid())
-
   schoolId  String
   userId    String?
   user      User?     @relation(fields: [userId], references: [id])
@@ -123,7 +118,6 @@ model Teacher {
 
 model Parent {
   id String @id @default(cuid())
-
   schoolId  String
   userId    String?
   user      User?     @relation(fields: [userId], references: [id])

@@ -7,6 +7,11 @@ export const createClass = async (req: Request, res: Response) => {
     try {
       const { name, capacity,  teacherId } = req.body;
 
+      if(!name || !capacity || !teacherId){
+        res.status(400).json({ error: "All fields are required" });
+        return;
+      }
+
       const teacher = await prisma.teacher.findUnique({ where: { id: teacherId } });
       if (!teacher) {
          res.status(400).json({ error: "Teacher not found" });
