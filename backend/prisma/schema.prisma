@@ -59,17 +59,7 @@ model User {
   accounts           Account[]
 }
 
-enum Role {
-  superadmin
-  admin
-  teacher
-  student
-  parent
-  library
-  hostel
-  transport
-  account
-}
+
 
 model PasswordResetToken {
   id        Int       @id @default(autoincrement())
@@ -308,7 +298,17 @@ enum Day {
   THURSDAY
   FRIDAY
 }
-
+enum Role {
+  superadmin
+  admin
+  teacher
+  student
+  parent
+  library
+  hostel
+  transport
+  account
+}
 // Fees take key secret and api from admin dashboard
 // doubt forums
 // competitions
