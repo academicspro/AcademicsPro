@@ -188,8 +188,6 @@ model Class {
   teacher    Teacher?       @relation(fields: [teacherId], references: [id])
   lessons       Lesson[]
   students      Student[]
-  // gradeId       String
-  // grade         Grade          @relation(fields: [gradeId], references: [id])
   grade  Grade[]
   events        Event[]
   announcements Announcement[]
@@ -237,7 +235,6 @@ model Assignment {
   title     String
   startDate DateTime
   dueDate   DateTime
-
   lessonId String
   lesson   Lesson   @relation(fields: [lessonId], references: [id])
   results  Result[]
@@ -246,7 +243,6 @@ model Assignment {
 model Result {
   id    String @id @default(cuid())
   score Int
-
   examId       String?
   exam         Exam?       @relation(fields: [examId], references: [id])
   assignmentId String?
@@ -259,7 +255,6 @@ model Attendance {
   id      String   @id @default(cuid())
   date    DateTime
   present Boolean
-
   studentId String
   student   Student @relation(fields: [studentId], references: [id])
   lessonId  String
@@ -272,7 +267,6 @@ model Event {
   description String
   startTime   DateTime
   endTime     DateTime
-
   classId String?
   class   Class?  @relation(fields: [classId], references: [id])
 }
@@ -282,7 +276,6 @@ model Announcement {
   title       String
   description String
   date        DateTime
-
   classId String?
   class   Class?  @relation(fields: [classId], references: [id])
 }
@@ -298,9 +291,6 @@ model Fee {
   updatedAt DateTime @default(now()) @updatedAt
   paidAt DateTime?
   dueDate DateTime
-  
-
-
   FeeHistory FeeHistory[]
 }
 model FeeHistory {
