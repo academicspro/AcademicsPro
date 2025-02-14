@@ -19,6 +19,7 @@ export const getAllUsers = async (req: Request, res: Response) => {
           pincode: true,
           bloodType: true,
           sex: true,
+          teacherId: true,
           role: true,
           school: {
             select: {
@@ -56,6 +57,7 @@ export const getAllUsers = async (req: Request, res: Response) => {
           bloodType: true,
           sex: true,
           role: true,
+          teacherId: true,
           school: {
             select: {
               name: true, 

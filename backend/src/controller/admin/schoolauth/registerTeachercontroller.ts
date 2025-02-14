@@ -93,6 +93,13 @@ export const registerteacher = async (req: Request, res: Response) => {
         },
       },
     });
+     // Update user with teacherId
+     await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        teacherId: teacher.id,
+      },
+    });
 
     res.status(200).json({ message: "teacher created successfully", teacher });
   } catch (error) {
@@ -110,6 +117,8 @@ export const getAllteacher = async (req: Request, res: Response) => {
         role: "teacher",
       },
     });
+
+
 
     res.status(200).json(teacher);
   } catch (error) {
