@@ -18,6 +18,7 @@ export const createClass = async (req: Request, res: Response) => {
           teacher: { connect: { id: teacherId } }
          },
       });
+
       console.log(newClass);
       res.json(newClass);
     } catch (error) {
