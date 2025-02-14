@@ -98,6 +98,10 @@ model Student {
 
   Grade Grade[]
   parent Parent[]
+
+  Fee Fee[]
+
+  Payment Payment[]
 }
 
 model Teacher {
@@ -286,6 +290,49 @@ model Announcement {
   class   Class?  @relation(fields: [classId], references: [id])
 }
 
+
+model Fee {
+  id String @id @default(cuid())
+  studentId String
+  student Student @relation(fields: [studentId], references: [id])
+  amount Float
+  status String @default("pending")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  paidAt DateTime?
+  dueDate DateTime
+  
+
+
+  FeeHistory FeeHistory[]
+}
+model FeeHistory {
+  id        String   @id @default(uuid())
+  feeId     String
+  fee       Fee      @relation(fields: [feeId], references: [id])
+  changeLog String   // JSON storing changes (amount updates, status changes)
+  createdAt DateTime @default(now())
+}
+
+
+model Payment {
+  id String @id @default(cuid())
+  studentId String
+  student Student @relation(fields: [studentId], references: [id])
+  amount Float
+  stuatus String @default("initiated")
+  orderId String @unique
+  paymentId String @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+model Settings {
+  id        String @id @default(cuid())
+  key_id    String
+  key_secret String
+}
+
+
 enum UserSex {
   MALE
   FEMALE
@@ -309,7 +356,7 @@ enum Role {
   transport
   account
 }
-// Fees take key secret and api from admin dashboard
+
 // doubt forums
 // competitions
 // leaderboard
