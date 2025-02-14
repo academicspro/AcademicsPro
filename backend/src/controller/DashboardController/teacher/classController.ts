@@ -76,3 +76,17 @@ export const getClassById = async (req: Request, res: Response) => {
         res.status(500).json({ error: (error as any).message });
         }
     };
+
+    export const getClassesByTeacherId = async (req: Request, res: Response) => {
+
+        try {
+          const { teacherId } = req.params;
+          const classes = await prisma.class.findMany({
+            where: { teacherId },
+          });
+          res.json(classes);
+        } catch (error) {
+          res.status(500).json({ error: (error as any).message });
+    }
+
+  };
