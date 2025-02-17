@@ -21,25 +21,67 @@ model PasswordResetToken {
 
   @@index([expiresAt])
 }
+
+model plan {
+  id           String   @id @default(cuid())
+  name         String // Basic , Pro , Enterprise
+  price        Float
+  durationDays Int // 7,15,30
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now()) @updatedAt
+
+  subscription subscription[]
+}
+
+model subscription {
+  id        String   @id @default(cuid())
+  schoolId  String
+  school    School   @relation(fields: [schoolId], references: [id])
+  planId    String
+  plan      plan     @relation(fields: [planId], references: [id])
+  startDate DateTime
+  endDate   DateTime
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
 model School {
-  id         String      @id @default(cuid())
-  name       String
-  phone      String      @unique
-  address    String
-  city       String
-  state      String
-  country    String
-  pincode    String
-  createdAt  DateTime    @default(now())
-  updatedAt  DateTime    @default(now()) @updatedAt
-  users      User[]      @relation()
-  students   Student[]
-  teachers   Teacher[]
-  parents    Parent[]
-  libraries  Library[]
-  hostels    Hostel[]
-  transports Transport[]
-  accounts   Account[]
+  id            String         @id @default(cuid())
+  name          String   
+  email         String          @unique    
+  phone         String
+  address       String
+  city          String
+  state         String
+  password      String?
+  country       String
+  pincode       String
+  role          Role           @default(admin)
+  profilePic    String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @default(now()) @updatedAt
+  users         User[]         @relation()
+  students      Student[]
+  teachers      Teacher[]
+  parents       Parent[]
+  libraries     Library[]
+  hostels       Hostel[]
+  transports    Transport[]
+  accounts      Account[]
+  subscription  subscription[]
+  fees          Fee[]
+  paymentSecret PaymentSecret?
+}
+
+model PaymentSecret {
+  id        String       @id @default(cuid())
+  schoolId  String   @unique
+  school    School   @relation(fields: [schoolId], references: [id])
+  keyId     String
+  keySecret String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 // User Models are defined here
@@ -79,14 +121,10 @@ model User {
   accounts           Account[]
 }
 
-
-
-
-
 // School Addmin user models
 
 model Student {
-  id String @id @default(cuid())
+  id          String       @id @default(cuid())
   schoolId    String
   userId      String?
   user        User?        @relation(fields: [userId], references: [id])
@@ -97,14 +135,52 @@ model Student {
   class       Class        @relation(fields: [classId], references: [id])
   attendances Attendance[]
   results     Result[]
-  Grade Grade[]
-  parent Parent[]
-  Fee Fee[]
-  Payment Payment[]
+  Grade       Grade[]
+  parent      Parent[]
+  fees        Fee[]
+  payments    Payment[]
+}
+
+model Fee {
+  id         String    @id @default(cuid())
+  studentId  String
+  student    Student   @relation(fields: [studentId], references: [id])
+  amount     Float
+  dueDate    DateTime
+  finePerDay Float     @default(0)
+  status     String    @default("Pending") // Pending , Partial, PAID , Overdue
+  Payment    Payment[]
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now()) @updatedAt
+
+  School School[]
+}
+
+model Payment {
+  id                String   @id @default(cuid())
+  feeId             String
+  fee               Fee      @relation(fields: [feeId], references: [id])
+  amount            Float
+  razorpayOrderId   String @unique
+  razorpayPaymentId String?
+  status            String   @default("Pending") // Pending , PAID, Failed
+  paymentDate       DateTime
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @default(now()) @updatedAt
+
+  Student Student[]
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  feeId     String
+  type      String // Reminder , Overdue
+  sentAt    DateTime @default(now())
+  createdAt DateTime @default(now())
 }
 
 model Teacher {
-  id String @id @default(cuid())
+  id        String    @id @default(cuid())
   schoolId  String
   userId    String?
   user      User?     @relation(fields: [userId], references: [id])
@@ -117,7 +193,7 @@ model Teacher {
 }
 
 model Parent {
-  id String @id @default(cuid())
+  id        String    @id @default(cuid())
   schoolId  String
   userId    String?
   user      User?     @relation(fields: [userId], references: [id])
@@ -172,11 +248,11 @@ model Account {
 }
 
 model Grade {
-  id    String @id @default(cuid())
-  level Int    @unique
+  id        String  @id @default(cuid())
+  level     Int     @unique
   studentId String
   students  Student @relation(fields: [studentId], references: [id])
-  classess Class[]
+  classess  Class[]
 }
 
 model Class {
@@ -184,14 +260,13 @@ model Class {
   name     String @unique
   capacity Int
 
-  teacherId  String?
-  teacher    Teacher?       @relation(fields: [teacherId], references: [id])
+  teacherId     String?
+  teacher       Teacher?       @relation(fields: [teacherId], references: [id])
   lessons       Lesson[]
   students      Student[]
-  grade  Grade[]
+  grade         Grade[]
   events        Event[]
   announcements Announcement[]
-
 }
 
 model Subject {
@@ -199,7 +274,7 @@ model Subject {
   name     String    @unique
   teachers Teacher[]
   lessons  Lesson[]
-}  
+}
 
 model Lesson {
   id        String   @id @default(cuid())
@@ -235,14 +310,14 @@ model Assignment {
   title     String
   startDate DateTime
   dueDate   DateTime
-  lessonId String
-  lesson   Lesson   @relation(fields: [lessonId], references: [id])
-  results  Result[]
+  lessonId  String
+  lesson    Lesson   @relation(fields: [lessonId], references: [id])
+  results   Result[]
 }
 
 model Result {
-  id    String @id @default(cuid())
-  score Int
+  id           String      @id @default(cuid())
+  score        Int
   examId       String?
   exam         Exam?       @relation(fields: [examId], references: [id])
   assignmentId String?
@@ -252,13 +327,13 @@ model Result {
 }
 
 model Attendance {
-  id      String   @id @default(cuid())
-  date    DateTime
-  present Boolean
+  id        String   @id @default(cuid())
+  date      DateTime
+  present   Boolean
   studentId String
-  student   Student @relation(fields: [studentId], references: [id])
+  student   Student  @relation(fields: [studentId], references: [id])
   lessonId  String
-  lesson    Lesson  @relation(fields: [lessonId], references: [id])
+  lesson    Lesson   @relation(fields: [lessonId], references: [id])
 }
 
 model Event {
@@ -267,8 +342,8 @@ model Event {
   description String
   startTime   DateTime
   endTime     DateTime
-  classId String?
-  class   Class?  @relation(fields: [classId], references: [id])
+  classId     String?
+  class       Class?   @relation(fields: [classId], references: [id])
 }
 
 model Announcement {
@@ -276,49 +351,9 @@ model Announcement {
   title       String
   description String
   date        DateTime
-  classId String?
-  class   Class?  @relation(fields: [classId], references: [id])
+  classId     String?
+  class       Class?   @relation(fields: [classId], references: [id])
 }
-
-
-model Fee {
-  id String @id @default(cuid())
-  studentId String
-  student Student @relation(fields: [studentId], references: [id])
-  amount Float
-  status String @default("pending")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
-  paidAt DateTime?
-  dueDate DateTime
-  FeeHistory FeeHistory[]
-}
-model FeeHistory {
-  id        String   @id @default(uuid())
-  feeId     String
-  fee       Fee      @relation(fields: [feeId], references: [id])
-  changeLog String   // JSON storing changes (amount updates, status changes)
-  createdAt DateTime @default(now())
-}
-
-
-model Payment {
-  id String @id @default(cuid())
-  studentId String
-  student Student @relation(fields: [studentId], references: [id])
-  amount Float
-  stuatus String @default("initiated")
-  orderId String @unique
-  paymentId String @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
-}
-model Settings {
-  id        String @id @default(cuid())
-  key_id    String
-  key_secret String
-}
-
 
 enum UserSex {
   MALE
@@ -332,6 +367,7 @@ enum Day {
   THURSDAY
   FRIDAY
 }
+
 enum Role {
   superadmin
   admin
@@ -343,6 +379,7 @@ enum Role {
   transport
   account
 }
+
 
 // doubt forums
 // competitions
@@ -360,17 +397,12 @@ enum Role {
 // download reports 
 // notification
 
-
 // <--------------------V1 Completed------------------------->
-
 
 // <--------------------V2 Start------------------------->
 
-
 // <--------------------V2 Completed------------------------->
 
-
 // <--------------------V3 Start------------------------->
-
 
 // <--------------------V3 Completed------------------------->

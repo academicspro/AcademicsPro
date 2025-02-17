@@ -20,10 +20,11 @@ import gradeRoute from "./routes/dashboard/teacher/gradeRoute";
 import lessonRoute from "./routes/dashboard/teacher/lessonRoute";
 import subjectRoute from "./routes/dashboard/teacher/subjectRoute";
 import resultRoute from "./routes/dashboard/teacher/resultRoute";
-import AdminregisterRoute from "./routes/superadmin/AdminregisterRoute";
+
 import userRoutes from "./routes/superadmin/userRoutes";
 import eventRoutes from "./routes/dashboard/admin/eventRoutes";
 import annoumcmentRoutes from "./routes/dashboard/admin/annoumcmentRoutes";
+import paymentSecreateRoute from "./routes/dashboard/admin/paymentSecreateRoute";
 
 const app = express();
 
@@ -48,7 +49,7 @@ app.use("/api/v1", schoolRoute);
 app.use("/api/v1", superAdminRoute);
 app.use("/api/v1", signinRoute);
 app.use("/api/v1", forgotRoute);
-app.use("/api/v1", AdminregisterRoute);
+
 
 // School Auth Routes
 app.use('/api/v1',teacherRoutes);
@@ -86,6 +87,7 @@ app.use('/api/v1',subjectRoute);
 
 app.use('/api/v1',eventRoutes);
 app.use('/api/v1',annoumcmentRoutes);
+app.use('/api/v1',paymentSecreateRoute);
 
 
 

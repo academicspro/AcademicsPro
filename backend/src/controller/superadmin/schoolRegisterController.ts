@@ -1,38 +1,70 @@
 import { prisma } from "../../db/prisma";
 import { Request, Response } from "express";
+import { randomBytes } from "crypto";
+import bcrypt from "bcryptjs";
+import { uploadFile } from "../../config/upload";
+import { sendRegistrationEmail } from "../../config/email";
 
 // Register a school
 
 export const registerSchool = async (req: Request, res: Response) => {
   try {
-    const { name, phone, address, city, state, country, pincode } = req.body;
+    const { name,email, phone, address, city, state, country, pincode } = req.body;
+    const profilePicFile = req.file;
 
     if (
       !name ||
       !phone ||
+      !email ||
       !address ||
       !city ||
       !state ||
       !country ||
-      !pincode
+      !pincode 
+
+
     ) {
       res.status(400).json({ message: "All fields are required" });
       return;
     }
+
+    // Check if file is uploaded
+        if (!profilePicFile || !profilePicFile.buffer) {
+          res.status(400).json({ error: "Profile picture is required." });
+          return;
+        }
+    
+        // Upload profile picture to Cloudinary
+        const { publicId, url } = await uploadFile(
+          profilePicFile.buffer,
+          "profile_pics"
+        );
+    
+        const tempPassword = randomBytes(6).toString("hex");
+        const hashedPassword = await bcrypt.hash(tempPassword, 10);
+
+
     const school = await prisma.school.create({
       data: {
         name,
+        email,
         phone,
         address,
         city,
         state,
         country,
         pincode,
+        password: hashedPassword,
+        profilePic: url,
+        role:"admin"
       },
     });
-    res.status(200).json({ message: "School registered successfully", school });
+        // Send registration email
+        await sendRegistrationEmail(email, tempPassword);
+
+    res.status(200).json({ message: "School Admin registered successfully", school });
   } catch (error) {
-    console.error("Error registering school:", error);
+    console.error("Error registering school admin:", error);
     res.status(500).json({ message: "Internal server error", error });
   }
 };

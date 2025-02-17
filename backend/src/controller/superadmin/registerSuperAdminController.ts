@@ -19,7 +19,9 @@ export const registerSuperAdmin = async (req: Request, res: Response) => {
       state,
       country,
       pincode,
+      sex,
       password,
+      bloodType,
     } = req.body;
     const profilePicFile = req.file;
 
@@ -32,7 +34,9 @@ export const registerSuperAdmin = async (req: Request, res: Response) => {
       !city ||
       !state ||
       !country ||
-      !pincode
+      !pincode ||
+      !sex ||
+      !bloodType 
     ) {
       res.status(400).json({ error: "All fields are required." });
       return;
@@ -63,8 +67,8 @@ export const registerSuperAdmin = async (req: Request, res: Response) => {
         state,
         country,
         pincode,
-        sex: "FEMALE",
-        bloodType: "O+",
+        sex,
+        bloodType,
         profilePic: url,
         password: hashedPassword,
         role: "superadmin",
@@ -74,9 +78,9 @@ export const registerSuperAdmin = async (req: Request, res: Response) => {
     // Send registration email
     await sendRegistrationEmail(email, password);
 
-    res.status(200).json({ message: "Student created successfully", user });
+    res.status(200).json({ message: "SuperAdmin created successfully", user });
   } catch (error) {
-    console.error("Error creating Student:", error);
+    console.error("Error creating SuperAdmin:", error);
     res.status(500).json({ error: "Something went wrong. Please try again." });
   }
 };
