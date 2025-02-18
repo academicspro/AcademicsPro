@@ -202,41 +202,41 @@ model Teacher {
   previousSchoolAddress String?
   previousSchoolPhone   String?
   address               String?
-  PanNumber String?
-  status    String? @default("Active") // Active , Inactive
-  salary        Int?
-  contractType  String?   @default("Full Time") // Full Time , Part Time
-  dateOfPayment DateTime?
-  medicalLeave   String?
-  casualLeave    String?
-  MaternityLeave String?
-  SickLeave      String?
-  bankName      String?
-  accountNumber String?
-  ifscCode      String?
-  branchName    String?
-  Route         String?
-  VehicleNumber String?
-  PickUpPoint   String?
-  hostelName String?
-  RoomNumber String?
-  facebook  String?
-  twitter   String?
-  linkedin  String?
-  instagram String?
-  youtube   String?
-  Resume        String?
-  joiningLetter String?
-  proficePic    String?
-  schoolId  String
-  userId    String?
-  user      User?     @relation(fields: [userId], references: [id])
-  school    School    @relation(fields: [schoolId], references: [id])
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @default(now()) @updatedAt
-  subjects  Subject[]
-  lessons   Lesson[]
-  classes   Class[]
+  PanNumber             String?
+  status                String? @default("Active") // Active , Inactive
+  salary                Int?
+  contractType          String?   @default("Full Time") // Full Time , Part Time
+  dateOfPayment         DateTime?
+  medicalLeave          String?
+  casualLeave           String?
+  MaternityLeave        String?
+  SickLeave             String?
+  accountNumber         String?
+  bankName              String?
+  ifscCode              String?
+  branchName            String?
+  Route                 String?
+  VehicleNumber         String?
+  PickUpPoint           String?
+  hostelName            String?
+  RoomNumber            String?
+  facebook              String?
+  twitter               String?
+  linkedin              String?
+  instagram             String?
+  youtube               String?
+  Resume                String?
+  joiningLetter         String?
+  proficePic            String?
+  schoolId              String
+  userId                String?
+  user                  User?     @relation(fields: [userId], references: [id])
+  school                School    @relation(fields: [schoolId], references: [id])
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @default(now()) @updatedAt
+  subjects              Subject[]
+  lessons               Lesson[]
+  classes               Class[]
 }
 model Grade {
   id        String  @id @default(cuid())
