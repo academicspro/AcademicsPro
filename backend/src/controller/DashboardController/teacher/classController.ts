@@ -83,6 +83,10 @@ export const getClassById = async (req: Request, res: Response) => {
         }
     };
 
+
+    // Get Teacher Class
+    
+
     export const getClassesByTeacherId = async (req: Request, res: Response) => {
 
         try {

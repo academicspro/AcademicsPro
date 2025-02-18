@@ -7,9 +7,71 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// <--------------------V1 Start------------------------->
+// <------------------------------------------------ Super Admin Models are defined here -------------------------------------------------------------->
 
-// Super Admin Models are defined here
+model School {
+  id            String         @id @default(cuid())
+  name          String
+  email         String         @unique
+  phone         String
+  address       String
+  city          String
+  state         String
+  password      String?
+  country       String
+  pincode       String
+  role          Role           @default(admin)
+  profilePic    String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @default(now()) @updatedAt
+  users         User[]         @relation()
+  students      Student[]
+  teachers      Teacher[]
+  parents       Parent[]
+  libraries     Library[]
+  hostels       Hostel[]
+  transports    Transport[]
+  accounts      Account[]
+  subscription  subscription[]
+  fees          Fee[]
+  paymentSecret PaymentSecret?
+}
+
+model User {
+  id                 String               @id @default(cuid())
+  name               String
+  email              String               @unique
+  phone              String
+  profilePic         String?
+  password           String?
+  address            String?
+  city               String?
+  state              String?
+  country            String?
+  pincode            String?
+  bloodType          String?
+  sex                UserSex?
+  role               Role                 @default(superadmin)
+  schoolId           String?
+  school             School?              @relation(fields: [schoolId], references: [id])
+  students           Student[]
+  PasswordResetToken PasswordResetToken[]
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @default(now()) @updatedAt
+  teacherId          String?
+  studentId          String?
+  parentId           String?
+  libraryId          String?
+  hostelId           String?
+  transportId        String?
+  accountId          String?
+  teachers           Teacher[]
+  parents            Parent[]
+  libraries          Library[]
+  hostels            Hostel[]
+  transports         Transport[]
+  accounts           Account[]
+}
 
 model PasswordResetToken {
   id        Int       @id @default(autoincrement())
@@ -48,116 +110,6 @@ model subscription {
   updatedAt DateTime @default(now()) @updatedAt
 }
 
-model School {
-  id            String         @id @default(cuid())
-  name          String
-  email         String         @unique
-  phone         String
-  address       String
-  city          String
-  state         String
-  password      String?
-  country       String
-  pincode       String
-  role          Role           @default(admin)
-  profilePic    String?
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @default(now()) @updatedAt
-  users         User[]         @relation()
-  students      Student[]
-  teachers      Teacher[]
-  parents       Parent[]
-  libraries     Library[]
-  hostels       Hostel[]
-  transports    Transport[]
-  accounts      Account[]
-  subscription  subscription[]
-  fees          Fee[]
-  paymentSecret PaymentSecret?
-}
-
-model PaymentSecret {
-  id        String   @id @default(cuid())
-  schoolId  String   @unique
-  school    School   @relation(fields: [schoolId], references: [id])
-  keyId     String
-  keySecret String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
-}
-
-// User Models are defined here
-model User {
-  id                 String               @id @default(cuid())
-  name               String
-  email              String               @unique
-  phone              String
-  profilePic         String?
-  password           String?
-  address            String?
-  city               String?
-  state              String?
-  country            String?
-  pincode            String?
-  bloodType          String?
-  sex                UserSex?
-  role               Role                 @default(superadmin)
-  schoolId           String?
-  school             School?              @relation(fields: [schoolId], references: [id])
-  students           Student[]
-  PasswordResetToken PasswordResetToken[]
-  createdAt          DateTime             @default(now())
-  updatedAt          DateTime             @default(now()) @updatedAt
-  teacherId          String?
-  studentId          String?
-  parentId           String?
-  libraryId          String?
-  hostelId           String?
-  transportId        String?
-  accountId          String?
-  teachers           Teacher[]
-  parents            Parent[]
-  libraries          Library[]
-  hostels            Hostel[]
-  transports         Transport[]
-  accounts           Account[]
-}
-
-// School Addmin user models
-
-model Student {
-  id          String       @id @default(cuid())
-  schoolId    String
-  userId      String?
-  user        User?        @relation(fields: [userId], references: [id])
-  school      School       @relation(fields: [schoolId], references: [id])
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @default(now()) @updatedAt
-  classId     String
-  class       Class        @relation(fields: [classId], references: [id])
-  attendances Attendance[]
-  results     Result[]
-  Grade       Grade[]
-  parent      Parent[]
-  fees        Fee[]
-  payments    Payment[]
-}
-
-model Fee {
-  id         String    @id @default(cuid())
-  studentId  String
-  student    Student   @relation(fields: [studentId], references: [id])
-  amount     Float
-  dueDate    DateTime
-  finePerDay Float     @default(0)
-  status     String    @default("Pending") // Pending , Partial, PAID , Overdue
-  Payment    Payment[]
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @default(now()) @updatedAt
-
-  School School[]
-}
-
 model Payment {
   id                String   @id @default(cuid())
   feeId             String
@@ -181,13 +133,61 @@ model Notification {
   createdAt DateTime @default(now())
 }
 
+// <--------------------------------------------------------------- Admin Models are defined here------------------------------------------------------------------>
+
+model PaymentSecret {
+  id        String   @id @default(cuid())
+  schoolId  String   @unique
+  school    School   @relation(fields: [schoolId], references: [id])
+  keyId     String
+  keySecret String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+model Fee {
+  id         String    @id @default(cuid())
+  studentId  String
+  student    Student   @relation(fields: [studentId], references: [id])
+  amount     Float
+  dueDate    DateTime
+  finePerDay Float     @default(0)
+  status     String    @default("Pending") // Pending , Partial, PAID , Overdue
+  Payment    Payment[]
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now()) @updatedAt
+
+  School School[]
+}
+
+model Event {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  startTime   DateTime
+  endTime     DateTime
+  classId     String?
+  class       Class?   @relation(fields: [classId], references: [id])
+}
+
+model Announcement {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  date        DateTime
+  classId     String?
+  class       Class?   @relation(fields: [classId], references: [id])
+}
+
+// <---------------------------------------------------------------- Teacher Models are defined here ------------------------------------------------------------------->
+
 model Teacher {
-  id                    String        @id @default(cuid())
+  id                    String         @id @default(cuid())
   name                  String
   sex                   UserSex
-  email                 String  @unique
+  email                 String         @unique
   phone                 String
-  role                  Role          @default(teacher)
+  role                  Role           @default(teacher)
   password              String?
   bloodType             String?
   dateofJoin            DateTime?
@@ -202,53 +202,32 @@ model Teacher {
   previousSchoolAddress String?
   previousSchoolPhone   String?
   address               String?
-
-  PanNumber             String?
-  status                String?      @default("Active") // Active , Inactive
-
-  // payroll
+  PanNumber String?
+  status    String? @default("Active") // Active , Inactive
   salary        Int?
   contractType  String?   @default("Full Time") // Full Time , Part Time
   dateOfPayment DateTime?
-
-  // Leaves 
   medicalLeave   String?
   casualLeave    String?
   MaternityLeave String?
   SickLeave      String?
-
-  // Bank Details
-
   bankName      String?
   accountNumber String?
   ifscCode      String?
   branchName    String?
-
-  // transport info
-
   Route         String?
   VehicleNumber String?
   PickUpPoint   String?
-
-  // Hostel Info
-
   hostelName String?
   RoomNumber String?
-
-  // social media link 
-
   facebook  String?
   twitter   String?
   linkedin  String?
   instagram String?
   youtube   String?
-
-  // Documents
-
   Resume        String?
   joiningLetter String?
   proficePic    String?
-
   schoolId  String
   userId    String?
   user      User?     @relation(fields: [userId], references: [id])
@@ -259,62 +238,6 @@ model Teacher {
   lessons   Lesson[]
   classes   Class[]
 }
-
-model Parent {
-  id        String    @id @default(cuid())
-  schoolId  String
-  userId    String?
-  user      User?     @relation(fields: [userId], references: [id])
-  school    School    @relation(fields: [schoolId], references: [id])
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @default(now()) @updatedAt
-  students  Student[]
-}
-
-model Library {
-  id String @id @default(cuid())
-
-  schoolId  String
-  userId    String?
-  user      User?    @relation(fields: [userId], references: [id])
-  school    School   @relation(fields: [schoolId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
-}
-
-model Hostel {
-  id String @id @default(cuid())
-
-  schoolId  String
-  userId    String?
-  user      User?    @relation(fields: [userId], references: [id])
-  school    School   @relation(fields: [schoolId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
-}
-
-model Transport {
-  id String @id @default(cuid())
-
-  schoolId  String
-  userId    String?
-  user      User?    @relation(fields: [userId], references: [id])
-  school    School   @relation(fields: [schoolId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
-}
-
-model Account {
-  id String @id @default(cuid())
-
-  schoolId  String
-  userId    String?
-  user      User?    @relation(fields: [userId], references: [id])
-  school    School   @relation(fields: [schoolId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
-}
-
 model Grade {
   id        String  @id @default(cuid())
   level     Int     @unique
@@ -327,7 +250,6 @@ model Class {
   id       String @id @default(cuid())
   name     String @unique
   capacity Int
-
   teacherId     String?
   teacher       Teacher?       @relation(fields: [teacherId], references: [id])
   lessons       Lesson[]
@@ -350,7 +272,6 @@ model Lesson {
   day       Day
   startTime DateTime
   endTime   DateTime
-
   subjectId   String
   subject     Subject      @relation(fields: [subjectId], references: [id])
   classId     String
@@ -367,7 +288,6 @@ model Exam {
   title     String
   startTime DateTime
   endTime   DateTime
-
   lessonId String
   lesson   Lesson   @relation(fields: [lessonId], references: [id])
   results  Result[]
@@ -404,24 +324,88 @@ model Attendance {
   lesson    Lesson   @relation(fields: [lessonId], references: [id])
 }
 
-model Event {
-  id          String   @id @default(cuid())
-  title       String
-  description String
-  startTime   DateTime
-  endTime     DateTime
-  classId     String?
-  class       Class?   @relation(fields: [classId], references: [id])
+// <--------------------------------------------------------------------------- Student Models are defined here ------------------------------------------------------------------->
+
+model Student {
+  id          String       @id @default(cuid())
+  schoolId    String
+  userId      String?
+  user        User?        @relation(fields: [userId], references: [id])
+  school      School       @relation(fields: [schoolId], references: [id])
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @default(now()) @updatedAt
+  classId     String
+  class       Class        @relation(fields: [classId], references: [id])
+  attendances Attendance[]
+  results     Result[]
+  Grade       Grade[]
+  parent      Parent[]
+  fees        Fee[]
+  payments    Payment[]
 }
 
-model Announcement {
-  id          String   @id @default(cuid())
-  title       String
-  description String
-  date        DateTime
-  classId     String?
-  class       Class?   @relation(fields: [classId], references: [id])
+// <------------------------------------------------------------- Parent Models are defined here ------------------------------------------------------------------->
+
+model Parent {
+  id        String    @id @default(cuid())
+  schoolId  String
+  userId    String?
+  user      User?     @relation(fields: [userId], references: [id])
+  school    School    @relation(fields: [schoolId], references: [id])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now()) @updatedAt
+  students  Student[]
 }
+
+// <------------------------------------------------------------- Library Models are defined here ------------------------------------------------------------------->
+
+model Library {
+  id String @id @default(cuid())
+  schoolId  String
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+  school    School   @relation(fields: [schoolId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+// <------------------------------------------------------------- Hostel Models are defined here ------------------------------------------------------------------->
+
+model Hostel {
+  id String @id @default(cuid())
+  schoolId  String
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+  school    School   @relation(fields: [schoolId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+// <------------------------------------------------------------- Transport Models are defined here ------------------------------------------------------------------->
+
+model Transport {
+  id String @id @default(cuid())
+  schoolId  String
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+  school    School   @relation(fields: [schoolId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+// <-------------------------------------------------------------- Account Models are defined here ------------------------------------------------------------------->
+
+model Account {
+  id String @id @default(cuid())
+  schoolId  String
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+  school    School   @relation(fields: [schoolId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+// <---------------------------------------------------------------- All Enums are defined here  ------------------------------------------------------------------->
 
 enum UserSex {
   MALE
@@ -454,6 +438,7 @@ enum MaritalStatus {
   DIVORCED
 }
 
+
 // doubt forums
 // competitions
 // leaderboard
@@ -469,13 +454,3 @@ enum MaritalStatus {
 // Self enhacement -> quiz , Newspaper reading 
 // download reports 
 // notification
-
-// <--------------------V1 Completed------------------------->
-
-// <--------------------V2 Start------------------------->
-
-// <--------------------V2 Completed------------------------->
-
-// <--------------------V3 Start------------------------->
-
-// <--------------------V3 Completed------------------------->
