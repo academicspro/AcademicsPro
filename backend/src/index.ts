@@ -49,6 +49,7 @@ app.use("/api/v1", schoolRoute);
 app.use("/api/v1", superAdminRoute);
 app.use("/api/v1", signinRoute);
 app.use("/api/v1", forgotRoute);
+app.use("/api/v1",forgotRoute);
 
 
 // School Auth Routes
