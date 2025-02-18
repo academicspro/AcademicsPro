@@ -6,7 +6,11 @@ import { deleteteacher, getAllteacher, getteacherById, registerteacher, updatete
 const router = express.Router();
 const upload = multer();
 
-router.post('/teacher',upload.single("profilePic"), registerteacher);
+router.post('/teacher', upload.fields([
+    { name: 'profilePic', maxCount: 1 },
+    { name: 'Resume', maxCount: 1 },
+    { name: 'joiningLetter', maxCount: 1 }
+  ]), registerteacher);
 router.get('/teacher',getAllteacher);
 router.get('/teacher/:id',getteacherById);
 router.put('/teacher/:id',updateteacher);

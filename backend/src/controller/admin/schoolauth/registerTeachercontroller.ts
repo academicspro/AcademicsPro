@@ -11,95 +11,192 @@ export const registerteacher = async (req: Request, res: Response) => {
   try {
     const {
       name,
+      sex,
       email,
       phone,
-      address,
-      city,
-      state,
-      country,
-      pincode,
-      schoolId,
-      sex,
       bloodType,
+      dateofJoin,
+      fatherName,
+      maritalStatus,
+      languagesKnown,
+      Qualification,
+      workExperience,
+      previousSchool,
+      previousSchoolAddress,
+      previousSchoolPhone,
+      address,
+      PanNumber,
+      status,
+      salary,
+      contractType,
+      dateOfPayment,
+      medicalLeave,
+      casualLeave,
+      MaternityLeave,
+      SickLeave,
+      bankName,
+      accountNumber,
+      ifscCode,
+      branchName,
+      Route,
+      VehicleNumber,
+      PickUpPoint,
+      hostelName,
+      RoomNumber,
+      facebook,
+      twitter,
+      linkedin,
+      instagram,
+      youtube,
+      schoolId,
     } = req.body;
-    const profilePicFile = req.file;
+    const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+    console.log("Logging Requested File", req.files);
+
+    // Extract multiple files correctly
+    const profilePicFile = files?.profilePic?.[0];
+    const ResumeFile = files?.Resume?.[0];
+    const joiningLetterFile = files?.joiningLetter?.[0];
+    console.log(
+      "Logging Requested File",
+      profilePicFile,
+      ResumeFile,
+      joiningLetterFile
+    );
 
     // Validate required fields
     if (
       !name ||
+      !sex ||
       !email ||
       !phone ||
+      !bloodType ||
+      !dateofJoin ||
+      !fatherName ||
+      !maritalStatus ||
+      !languagesKnown ||
+      !Qualification ||
+      !workExperience ||
+      !previousSchool ||
+      !previousSchoolAddress ||
+      !previousSchoolPhone ||
       !address ||
-      !city ||
-      !state ||
-      !country ||
-      !pincode ||
-      !schoolId ||
-      !sex ||
-      !bloodType
+      !PanNumber ||
+      !status ||
+      !salary ||
+      !contractType ||
+      !dateOfPayment ||
+      !medicalLeave ||
+      !casualLeave ||
+      !MaternityLeave ||
+      !SickLeave ||
+      !bankName ||
+      !accountNumber ||
+      !ifscCode ||
+      !branchName ||
+      !Route ||
+      !VehicleNumber ||
+      !PickUpPoint ||
+      !hostelName ||
+      !RoomNumber ||
+      !facebook ||
+      !twitter ||
+      !linkedin ||
+      !instagram ||
+      !youtube ||
+      !schoolId
     ) {
       res.status(400).json({ error: "All fields are required." });
       return;
     }
 
-    // Check if file is uploaded
-    if (!profilePicFile || !profilePicFile.buffer) {
+    // Validate file uploads
+    if (!profilePicFile) {
       res.status(400).json({ error: "Profile picture is required." });
       return;
     }
+    if (!ResumeFile) {
+      res.status(400).json({ error: "Resume is required." });
+      return;
+    }
+    if (!joiningLetterFile) {
+      res.status(400).json({ error: "Joining letter is required." });
+      return;
+    }
 
-    // Upload profile picture to Cloudinary
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { publicId, url } = await uploadFile(
+    // Upload files to Cloudinary
+
+    const profilePicUpload = await uploadFile(
       profilePicFile.buffer,
       "profile_pics"
+    );
+    const resumeUpload = await uploadFile(ResumeFile.buffer, "resumes");
+    const joiningLetterUpload = await uploadFile(
+      joiningLetterFile.buffer,
+      "joining_letters"
+    );
+    console.log(
+      "Logging uploading File",
+      profilePicUpload,
+      resumeUpload,
+      joiningLetterUpload
     );
 
     const tempPassword = randomBytes(6).toString("hex");
     const hashedPassword = await bcrypt.hash(tempPassword, 10);
 
-    // Create user
-    const user = await prisma.user.create({
-      data: {
-        name,
-        email,
-        phone,
-        address,
-        city,
-        state,
-        country,
-        pincode,
-        sex,
-        bloodType,
-        profilePic: url,
-        password: hashedPassword,
-        role: "teacher",
-        school: {
-          connect: { id: schoolId },
-        },
-      },
-    });
-
-    // Send registration email
-    await sendRegistrationEmail(email, tempPassword);
-
     const teacher = await prisma.teacher.create({
       data: {
-        user: {
-          connect: { id: user.id },
-        },
+        name,
+        sex,
+        email,
+        dateofJoin,
+        phone,
+        bloodType,
+        fatherName,
+        maritalStatus,
+        languagesKnown,
+        Qualification,
+        workExperience,
+        previousSchool,
+        previousSchoolAddress,
+        previousSchoolPhone,
+        address,
+        PanNumber,
+        status,
+        salary: parseInt(salary),
+        contractType,
+        dateOfPayment,
+        medicalLeave,
+        casualLeave,
+        MaternityLeave,
+        SickLeave,
+        bankName,
+        accountNumber,
+        ifscCode,
+        branchName,
+        Route,
+        VehicleNumber,
+        PickUpPoint,
+        hostelName,
+        RoomNumber,
+        facebook,
+        twitter,
+        linkedin,
+        instagram,
+        youtube,
+        role: "teacher",
+        Resume: profilePicUpload.url,
+        joiningLetter: resumeUpload.url,
+        proficePic: joiningLetterUpload.url,
+        password: hashedPassword,
         school: {
           connect: { id: schoolId },
         },
       },
     });
-     // Update user with teacherId
-     await prisma.user.update({
-      where: { id: user.id },
-      data: {
-        teacherId: teacher.id,
-      },
-    });
+    // Send registration email
+    await sendRegistrationEmail(email, tempPassword);
 
     res.status(200).json({ message: "teacher created successfully", teacher });
   } catch (error) {
@@ -112,13 +209,11 @@ export const registerteacher = async (req: Request, res: Response) => {
 
 export const getAllteacher = async (req: Request, res: Response) => {
   try {
-    const teacher = await prisma.user.findMany({
+    const teacher = await prisma.teacher.findMany({
       where: {
         role: "teacher",
       },
     });
-
-
 
     res.status(200).json(teacher);
   } catch (error) {
@@ -133,7 +228,7 @@ export const getteacherById = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    const teacher = await prisma.user.findUnique({
+    const teacher = await prisma.teacher.findUnique({
       where: { id },
     });
 
@@ -157,7 +252,7 @@ export const updateteacher = async (req: Request, res: Response) => {
     const { name, email, phone, address, city, state, country, pincode } =
       req.body;
 
-    const teacher = await prisma.user.findUnique({
+    const teacher = await prisma.teacher.findUnique({
       where: { id },
     });
 

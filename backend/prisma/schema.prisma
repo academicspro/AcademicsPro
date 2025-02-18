@@ -9,6 +9,8 @@ datasource db {
 
 // <--------------------V1 Start------------------------->
 
+// Super Admin Models are defined here
+
 model PasswordResetToken {
   id        Int       @id @default(autoincrement())
   token     String    @unique
@@ -48,8 +50,8 @@ model subscription {
 
 model School {
   id            String         @id @default(cuid())
-  name          String   
-  email         String          @unique    
+  name          String
+  email         String         @unique
   phone         String
   address       String
   city          String
@@ -75,7 +77,7 @@ model School {
 }
 
 model PaymentSecret {
-  id        String       @id @default(cuid())
+  id        String   @id @default(cuid())
   schoolId  String   @unique
   school    School   @relation(fields: [schoolId], references: [id])
   keyId     String
@@ -161,7 +163,7 @@ model Payment {
   feeId             String
   fee               Fee      @relation(fields: [feeId], references: [id])
   amount            Float
-  razorpayOrderId   String @unique
+  razorpayOrderId   String   @unique
   razorpayPaymentId String?
   status            String   @default("Pending") // Pending , PAID, Failed
   paymentDate       DateTime
@@ -180,7 +182,73 @@ model Notification {
 }
 
 model Teacher {
-  id        String    @id @default(cuid())
+  id                    String        @id @default(cuid())
+  name                  String
+  sex                   UserSex
+  email                 String  @unique
+  phone                 String
+  role                  Role          @default(teacher)
+  password              String?
+  bloodType             String?
+  dateofJoin            DateTime?
+  fatherName            String?
+  motherName            String?
+  dateOfBirth           DateTime?
+  maritalStatus         MaritalStatus?
+  languagesKnown        String
+  Qualification         String?
+  workExperience        String?
+  previousSchool        String?
+  previousSchoolAddress String?
+  previousSchoolPhone   String?
+  address               String?
+
+  PanNumber             String?
+  status                String?      @default("Active") // Active , Inactive
+
+  // payroll
+  salary        Int?
+  contractType  String?   @default("Full Time") // Full Time , Part Time
+  dateOfPayment DateTime?
+
+  // Leaves 
+  medicalLeave   String?
+  casualLeave    String?
+  MaternityLeave String?
+  SickLeave      String?
+
+  // Bank Details
+
+  bankName      String?
+  accountNumber String?
+  ifscCode      String?
+  branchName    String?
+
+  // transport info
+
+  Route         String?
+  VehicleNumber String?
+  PickUpPoint   String?
+
+  // Hostel Info
+
+  hostelName String?
+  RoomNumber String?
+
+  // social media link 
+
+  facebook  String?
+  twitter   String?
+  linkedin  String?
+  instagram String?
+  youtube   String?
+
+  // Documents
+
+  Resume        String?
+  joiningLetter String?
+  proficePic    String?
+
   schoolId  String
   userId    String?
   user      User?     @relation(fields: [userId], references: [id])
@@ -380,6 +448,11 @@ enum Role {
   account
 }
 
+enum MaritalStatus {
+  MARRIED
+  UNMARRIED
+  DIVORCED
+}
 
 // doubt forums
 // competitions
